@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Node.js - Step 8 - Dynamically Updating Data
 
 So far, this guide has walked you through how to approach implementing reading, adding, and deleting data from a database via an admin facing website. The previous steps covered were representative of the C, R, and D in CRUD, but there is one last principle we have yet to implement which is U. The letter U in CRUD is representative of update. Step 8 of the guide will help walk you through dynamically implementing update with a drop-down menu. At the end of this step, you will have a few changes to implement on your own to really make the update feature feel fluid.
@@ -290,3 +291,6 @@ function deleteDropDownMenu(personID){
 
 ```
 
+=======
+# CS340-TechTravelers
+>>>>>>> d5dca8e2072e17a842873097491eacdea026c2aa
