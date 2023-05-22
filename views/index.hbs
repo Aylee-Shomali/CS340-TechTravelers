@@ -1,134 +1,96 @@
 
 <!-- index.hbs -->
-<h1>The server is running!</h1>
-<p>If you see this text, the server is <strong>definitely</strong> working!</p>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<main id="intro">
+        <section>
+            <h2>TechTravels</h2>
 
+            <article class="descriptions">
+                <h3>Overview</h3>
+                <p>
+                TechTravels is a global online travel agency that connects customers with specialized travel agents to make their dream
+                destinations a reality. Our remote agents are eager to advise and plan trips for their customers in several forms
+                whether it be via phone, video call, email, messaging, or in-person meetings.  </p>
+                
+                <p>According to the US Travel Association,
+                international travel spending reached $93 billion in February, following the pandemic.<code>[1]</code> 
+                By 2023, it is estimated that 700
+                million people will book their travel online, with 83% being Americans.<code>[2]</code> 
+                TechTravels has a team of 200 agents who book
+                over 100,000 trip reservations annually and is expected to grow over time.</p>
+                
+                <p> Our database-driven website will track our
+                Customers and their Reservation details, such as Location, dates, and the travel Agents they are working with. That way,
+                we will be able to monitor how many customers we have and their information, where our customers want to travel, and the
+                number of reservations handled by each agent. Our database will also future-proof opportunities we may want to feature
+                or enable such as studying trends of popular destinations or running reports to see which geographical area most of our
+                customers come from.
+                </p>
 
-{{!-- Create a table --}}
-<table id="people-table">>
+                <p class="footnotes">
+                    <strong>[1]</strong> Mageau, Jamie. “The Latest Travel Data.” U.S. Travel Association, 30 Mar. 2023,
+                    https://www.ustravel.org/research/monthly-travel-data-report.
+                    <br>
+                    <strong>[2]</strong> “Top Guide to over 80 Online Travel Booking Statistics.” ConnollyCove, 22 Aug. 2022,
+                    https://www.connollycove.com/online-travel-booking-statistics/.
+                </p>
 
-    {{!-- Header section --}}
-    <thead>
+            </article>
+            <br>
 
-        {{!-- For just the first row, we print each key of the row object as a header cell so we
-        know what each column means when the page renders --}}
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>delete</th>
-        </tr>
-    </thead>
+            <article class="descriptions">
+                <h3>Entity-Relationship Diagram (ERD)</h3>
 
-    {{!-- Body section --}}
-    <tbody>
+                <img src="../images/erd.jpg" alt="erd" title="ERD">
+                <figcaption>Figure 1: TechTravels ERD</figcaption>
+            </article>
 
-        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
-        {{#each data}}
-        <tr data-value={{this.id}}>>
-            <td>{{this.id}}</td>
-            <td>{{this.fname}}</td>
-            <td>{{this.lname}}</td>
-            <td>{{this.homeworld}}</td>
-            <td>{{this.age}}</td>
-            <td><button onclick="deletePerson({{this.id}})">Delete</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<script src="./js/delete_person.js"></script>
+            <br>
+            <article class="descriptions">
+                <h3>Schema</h3>
+            
+                <img src="../images/schema.jpg" alt="schema" title="Schema">
+                <figcaption> Figure 2: TechTravels Schema</figcaption>
+            </article>
 
-<!-- /views/index.hbs -->
-<h2>Adding Data using an HTML form</h2>
-<p>To add a new person, please enter their information below and click `Submit`!</p>
-<form id="add-person-form" method="POST" action="/add-person-form">
-    <label for="input-fname">First Name: </label>
-    <input type="text" name="input-fname" id="input-fname-ajax">
-    
-    <label for="input-lname">Last Name: </label>
-    <input type="text" name="input-lname" id="input-lname-ajax">
+            <br>
+            <br>
+            <article class="descriptions">
+                <h3>Entity Table Descriptions</h3>
+                <dl>
+                    <dt><a href="/customers">Customers</a></dt>
+                    <dd>
+                        Records the details of customers wanting their travels booked by us.
+                    </dd> 
 
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld-ajax">
-        <option value="">Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
+                    <dt><a href="/agents">Agents</a></dt>
+                    <dd>
+                        Keeps track of our travel agents and their details.
+                    </dd>
 
-    <label for="input-age">Age: </label>
-    <input type="number" name="input-age" id="input-age-ajax">
+                    <dt><a href="/locations">Locations</a></dt>
+                    <dd>
+                        A categorical table of cities and their respective countries to keep track of where our customers want to travel and
+                        where our travel agents are based.
+                    </dd>
 
-    <input type="submit">
-</form>
+                    <dt><a href="/reservations">Reservations</a></dt>
+                    <dd>
+                        Records the details of customers’ travel reservations, which places they want to go and when, and which agent they are
+                        working with.
 
+                    </dd>
 
-<!-- /views/index.hbs -->
+                    <dt><a href="/customerReservation">CustomerReservations</a></dt>
+                    <dd>
+                        An intersection table depicting the M:N relationships between Customers and their Reservations.
+                    </dd>
 
-{{!-- Form to add a record to the table  --}}
-<h2>Adding Data with AJAX</h2>
-<p>To add a new person, please enter their information below and click 'Submit'!</p>
-<form id="add-person-form-ajax">
-    <label for="input-fname">First Name: </label>
-    <input type="text" name="input-fname" id="input-fname">
-    
-    <label for="input-lname">Last Name: </label>
-    <input type="text" name="input-lname" id="input-lname">
+                    <dt><a href="/reservationLocation">ReservationLocations</a></dt>
+                    <dd>
+                        An intersection table depicting the M:N relationships between a Reservations and it's location.
+                    </dd>
 
-
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld">
-        <option value="">Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-age">Age: </label>
-    <input type="number" name="input-age" id="input-age">
-
-    <input type="submit">
-</form>
-
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_person.js"></script>
-
-
-<h2>Search Using an HTML Form</h2>
-<p>Search by last name using the field below. Partial last names are OK too!</p>
-<form id="search-person-html" method='GET' action='/'>
-    <label for="input-lname">Search by Last Name: </label>
-    <input type="text" name="lname" id="input-lname-html-search">
-    
-    <input type="submit">
-    <a href='/'><button>Reset</button></a>
-</form>
-
-<h2>Updating A User's HomeWorld Form</h2>
-<p>To update a specific user's homeworld select their name from the drop-down menu on the left and their desired homeworld from the drop down menu on the right</p>
-<form id="update-person-form-ajax">
-
-    <label for="input-fullname">Full name: </label>
-    <select name="input-fullname" id="mySelect">
-        <option value="test">Select a Person</option>
-        {{#each data}}
-        <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld-update">
-        <option>Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-    <input type="submit">
-
-</form>
-
-<script src="./js/update_person.js"></script>
-
+                </dl>
+            </article>
+        </section>
+    </main>

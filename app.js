@@ -19,63 +19,37 @@ var db = require('./database/db-connector')
 // app.js - SETUP section
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(express.static(__dirname + '/public'));         // this is needed to allow for the form to use the ccs style sheet/javscript
+app.use(express.static(__dirname + '/public'));         // this is needed to allow for the form to use the css style sheet/javascript
     
 
 // app.js
 
-
 app.get('/', function(req, res)
 {
+    return res.render('index');
+});
+
+app.get('/customerReservation', function(req, res)
+{
     // Declare Query 1
-    let query1;
+    let query1 = "SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;";
 
-    // If there is no query string, we just perform a basic SELECT
-    if (req.query.lname === undefined)
-    {
-        query1 = "SELECT * FROM bsg_people;";
-    }
-
-    // If there is a query string, we assume this is a search, and return desired results
-    else
-    {
-        query1 = `SELECT * FROM bsg_people WHERE lname LIKE "${req.query.lname}%"`
-    }
-
-    // Query 2 is the same in both cases
-    let query2 = "SELECT * FROM bsg_planets;";
+    // Declare Query 2
+    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, startDate, endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
     // Run the 1st query
     db.pool.query(query1, function(error, rows, fields){
+        // Save the records
+        let customerReservations = rows; 
+
+        // Run the second query.
+        db.pool.query(query2, function(error, rows, fields){
         
-        // Save the people
-        let people = rows;
-        
-        // Run the second query
-        db.pool.query(query2, (error, rows, fields) => {
-            
-            // Save the planets
-            let planets = rows;
-            // BEGINNING OF NEW CODE
-            
-            // Construct an object for reference in the table
-            // Array.map is awesome for doing something with each
-            // element of an array.
-            let planetmap = {}
-            
-            planets.map(planet => {
-                let id = parseInt(planet.id, 10);
-
-                planetmap[id] = planet["name"];
-            })
-
-            // Overwrite the homeworld ID with the name of the planet in the people object
-            people = people.map(person => {
-                return Object.assign(person, {homeworld: planetmap[person.homeworld]})
-            })
-
-            // END OF NEW CODE
-            return res.render('index', {data: people, planets: planets});
+            // Save the records
+            let reservations = rows; 
+            console.log(rows);
+    
+            return res.render('customerReservation', {customerReservationData: customerReservations, reservationData: reservations});
         })
     })
 });

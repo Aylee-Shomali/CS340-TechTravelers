@@ -1,21 +1,3 @@
-// code for deletePerson function using jQuery
-// function deletePerson(personID) {
-//   let link = '/delete-person-ajax/';
-//   let data = {
-//     id: personID
-//   };
-
-//   $.ajax({
-//     url: link,
-//     type: 'DELETE',
-//     data: JSON.stringify(data),
-//     contentType: "application/json; charset=utf-8", 
-//     success: function(result) {
-//       deleteRow(personID);
-//     }
-//   });
-// }
-
 // code for deletePerson using regular javascript/xhttp
 function deletePerson(personID) {
     // Put our data we want to send in a javascript object
