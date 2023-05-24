@@ -28,7 +28,7 @@
             <td>{{this.customerReservationId}}</td>
             <td>{{this.customer}}</td>
             <td>{{this.reservationId}}</td>
-            <td><button onclick="deletePerson({{this.id}})">Delete</button></td>
+            <td><button onclick="deleteCustomerReservation({{this.customerReservationId}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -64,96 +64,63 @@
   </table>
 </div> <!-- reference -->
 
-<script src="./js/delete_person.js"></script>
+<!-- Insert -->
+<div id="insert">
+        <form id="add-customerReservation-form">
+            <legend><strong>Add CustomerReservation</strong></legend>
+            <fieldset class="fields">
+              <label for="customer" class="required"> Customer </label>
+              <select name="customer" required id="input-customerId">
+                <option value="0">Select a Customer</option>
+                {{#each customerData}}
+                <option value="{{this.customerId}}">{{this.customer}}</option>
+                {{/each}}
+              </select> 
+              <label for="reservationId" class="required"> Reservation ID </label>
+              <select name="reservationId" required id="input-reservationId">
+                <option value="0">Select a Reservation ID</option>
+                {{#each reservationData}}
+                <option value="{{this.reservationId}}">{{this.reservationId}}</option>
+                {{/each}}
+               </select> 
+              <caption>* these fields are required</caption>
+              </fieldset>
+              <input class="btn" type="submit" id="addCustomerReservation" value="Add CustomerReservation">
+        </form> 
+</div><!-- insert -->
 
-<!-- /views/index.hbs -->
-<h2>Adding Data using an HTML form</h2>
-<p>To add a new person, please enter their information below and click `Submit`!</p>
-<form id="add-person-form" method="POST" action="/add-person-form">
-    <label for="input-fname">First Name: </label>
-    <input type="text" name="input-fname" id="input-fname-ajax">
-    
-    <label for="input-lname">Last Name: </label>
-    <input type="text" name="input-lname" id="input-lname-ajax">
+<!-- Update -->
+<div id="update">
+    <form id="update-customerReservation-form">
+        <legend><strong>Update CustomerReservation</strong></legend>
+        <fieldset class="fields">
+          <label class="required">For Customer Reservation ID:</label>
+          <select name="id" required id="input-customerReservationId-update">
+                <option value="0">Select a CustomerReservation Id</option>
+                {{#each customerReservationData}}
+                <option value="{{this.customerReservationId}}">{{this.customerReservationId}}</option>
+                {{/each}}
+              </select> 
+        <label for="customer" class="required"> Customer </label>
+          <select name="customer" required id="input-customerId-update">
+                <option value="0">Select a Customer</option>
+                {{#each customerData}}
+                <option value="{{this.customerId}}">{{this.customer}}</option>
+                {{/each}}
+              </select> 
+              <label for="reservationId" class="required"> Reservation ID </label>
+              <select name="reservationId" required id="input-reservationId-update">
+                <option value="0">Select a Reservation ID</option>
+                {{#each reservationData}}
+                <option value="{{this.reservationId}}">{{this.reservationId}}</option>
+                {{/each}}
+               </select> 
+           <caption>* these fields are required</caption>
+          </fieldset>
+          <input class="btn" type="submit" id="updateCustomerReservation" value="Update CustomerReservation">
+    </form> 
+</div><!-- update -->
 
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld-ajax">
-        <option value="">Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-age">Age: </label>
-    <input type="number" name="input-age" id="input-age-ajax">
-
-    <input type="submit">
-</form>
-
-
-<!-- /views/index.hbs -->
-
-{{!-- Form to add a record to the table  --}}
-<h2>Adding Data with AJAX</h2>
-<p>To add a new person, please enter their information below and click 'Submit'!</p>
-<form id="add-person-form-ajax">
-    <label for="input-fname">First Name: </label>
-    <input type="text" name="input-fname" id="input-fname">
-    
-    <label for="input-lname">Last Name: </label>
-    <input type="text" name="input-lname" id="input-lname">
-
-
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld">
-        <option value="">Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-age">Age: </label>
-    <input type="number" name="input-age" id="input-age">
-
-    <input type="submit">
-</form>
-
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_person.js"></script>
-
-
-<h2>Search Using an HTML Form</h2>
-<p>Search by last name using the field below. Partial last names are OK too!</p>
-<form id="search-person-html" method='GET' action='/'>
-    <label for="input-lname">Search by Last Name: </label>
-    <input type="text" name="lname" id="input-lname-html-search">
-    
-    <input type="submit">
-    <a href='/'><button>Reset</button></a>
-</form>
-
-<h2>Updating A User's HomeWorld Form</h2>
-<p>To update a specific user's homeworld select their name from the drop-down menu on the left and their desired homeworld from the drop down menu on the right</p>
-<form id="update-person-form-ajax">
-
-    <label for="input-fullname">Full name: </label>
-    <select name="input-fullname" id="mySelect">
-        <option value="test">Select a Person</option>
-        {{#each data}}
-        <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld-update">
-        <option>Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-    <input type="submit">
-
-</form>
-
-<script src="./js/update_person.js"></script>
-
+<script src="./js/add_customerReservation.js"></script>
+<script src="./js/update_customerReservation.js"></script>
+<script src="./js/delete_customerReservation.js"></script>

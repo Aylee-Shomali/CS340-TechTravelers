@@ -5,11 +5,10 @@
 */
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
-PORT        = 9002;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 8008;                 // Set a port number at the top so it's easy to change in the future
 
 // app.js
 const { engine } = require('express-handlebars');
-var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
@@ -37,6 +36,9 @@ app.get('/customerReservation', function(req, res)
     // Declare Query 2
     let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, startDate, endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
+    // Declare Query 3
+    let query3 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
+
     // Run the 1st query
     db.pool.query(query1, function(error, rows, fields){
         // Save the records
@@ -44,75 +46,30 @@ app.get('/customerReservation', function(req, res)
 
         // Run the second query.
         db.pool.query(query2, function(error, rows, fields){
-        
+
             // Save the records
             let reservations = rows; 
-            console.log(rows);
+
+            // Run the third query.
+            db.pool.query(query3, function(error, rows, fields){
+        
+            // Save the records
+            let customers = rows; 
     
-            return res.render('customerReservation', {customerReservationData: customerReservations, reservationData: reservations});
+            return res.render('customerReservation', {customerReservationData: customerReservations, reservationData: reservations, customerData: customers});
+            })
         })
     })
 });
 
-
-app.post('/add-person-form', function(req, res){
-    // Capture the incoming data and parse it back to a JS object
-    let data = req.body;
-
-    // Capture NULL values
-    let homeworld = parseInt(data['input-homeworld']);
-    if (isNaN(homeworld))
-    {
-        homeworld = 'NULL'
-    }
-
-    let age = parseInt(data['input-age']);
-    if (isNaN(age))
-    {
-        age = 'NULL'
-    }
-
-    // Create the query and run it on the database
-    query1 = `INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES ('${data['input-fname']}', '${data['input-lname']}', ${homeworld}, ${age})`;
-    db.pool.query(query1, function(error, rows, fields){
-
-        // Check to see if there was an error
-        if (error) {
-
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error)
-            res.sendStatus(400);
-        }
-
-        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
-        // presents it on the screen
-        else
-        {
-            res.redirect('/');
-        }
-    })
-});
-
-app.post('/add-person-ajax', function(req, res) 
+app.post('/add-customerReservation', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
-    // Capture NULL values
-    let homeworld = parseInt(data.homeworld);
-    if (isNaN(homeworld))
-    {
-        homeworld = 'NULL'
-    }
-
-    let age = parseInt(data.age);
-    if (isNaN(age))
-    {
-        age = 'NULL'
-    }
-
     // Create the query and run it on the database
-    query1 = `INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES ('${data.fname}', '${data.lname}', ${homeworld}, ${age})`;
+    query1 = `INSERT INTO CustomerReservation (customerId, reservationId) VALUES (${data.customerId}, ${data.reservationId});`;
+
     db.pool.query(query1, function(error, rows, fields){
 
         // Check to see if there was an error
@@ -124,10 +81,9 @@ app.post('/add-person-ajax', function(req, res)
         }
         else
         {
-            // If there was no error, perform a SELECT * on bsg_people
-            query2 = `SELECT bsg_people.id, bsg_people.fname, bsg_people.lname, bsg_people.homeworld, bsg_people.age, bsg_planets.name 
-FROM bsg_people 
-LEFT JOIN bsg_planets ON bsg_people.homeworld = bsg_planets.id;`;
+            // If there was no error, get all records.
+            query2 = `SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;`;
+
             db.pool.query(query2, function(error, rows, fields){
 
                 // If there was an error on the second query, send a 400
@@ -147,15 +103,13 @@ LEFT JOIN bsg_planets ON bsg_people.homeworld = bsg_planets.id;`;
     })
 });
 
-app.delete('/delete-person-ajax/', function(req,res,next){
+app.delete('/delete-customerReservation/', function(req,res,next){
   let data = req.body;
-  let personID = parseInt(data.id);
-  let deleteBsg_Cert_People = `DELETE FROM bsg_cert_people WHERE pid = ?`;
-  let deleteBsg_People= `DELETE FROM bsg_people WHERE id = ?`;
-
+  let customerReservationId = parseInt(data.id);
+  let query = `DELETE FROM CustomerReservation WHERE customerReservationId = ?`;
 
         // Run the 1st query
-        db.pool.query(deleteBsg_Cert_People, [personID], function(error, rows, fields){
+        db.pool.query(query, [customerReservationId], function(error, rows, fields){
             if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -165,30 +119,22 @@ app.delete('/delete-person-ajax/', function(req,res,next){
 
             else
             {
-                // Run the second query
-                db.pool.query(deleteBsg_People, [personID], function(error, rows, fields) {
-
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    } else {
-                        res.sendStatus(204);
-                    }
-                })
+                res.sendStatus(204);
             }
 })});
 
-app.put('/put-person-ajax', function(req,res,next){                                   
+app.put('/put-customerReservation', function(req,res,next){                                   
   let data = req.body;
 
-  let homeworld = parseInt(data.homeworld);
-  let person = parseInt(data.fullname);
+  let id = parseInt(data.id);
+  let customerId = parseInt(data.customerId);
+  let reservationId = parseInt(data.reservationId);
 
-  queryUpdateWorld = `UPDATE bsg_people SET homeworld = ? WHERE bsg_people.id = ?`;
-  selectWorld = `SELECT * FROM bsg_planets WHERE id = ?`
+  queryUpdate = `UPDATE CustomerReservation SET customerId = ?, reservationId = ? WHERE customerReservationId = ?`;
+  querySelect = `SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId WHERE CustomerReservationId = ?;`
 
         // Run the 1st query
-        db.pool.query(queryUpdateWorld, [homeworld, person], function(error, rows, fields){
+        db.pool.query(queryUpdate, [customerId, reservationId, id], function(error, rows, fields){
             if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -196,12 +142,12 @@ app.put('/put-person-ajax', function(req,res,next){
             res.sendStatus(400);
             }
 
-            // If there was no error, we run our second query and return that data so we can use it to update the people's
+            // If there was no error, we run our second query and return that data so we can use it to update the record.
             // table on the front-end
             else
             {
                 // Run the second query
-                db.pool.query(selectWorld, [homeworld], function(error, rows, fields) {
+                db.pool.query(querySelect, [id], function(error, rows, fields) {
         
                     if (error) {
                         console.log(error);
@@ -212,8 +158,6 @@ app.put('/put-person-ajax', function(req,res,next){
                 })
             }
 })});
-
-
 
 /*
     LISTENER

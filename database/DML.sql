@@ -90,17 +90,16 @@ VALUES (:customerIdFromDropdown, :reservationIdFromDropdown);
 -- -----------------------------------------------------
 -- Select query to show data for existing record for CustomerReservation page Update operation. (Also used to show values in DELETE confirmation message)
 -- -----------------------------------------------------
-SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS Customer, reservationId
+SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId
 FROM CustomerReservation
 JOIN Customers ON CustomerReservation.customerId = Customers.customerId
-WHERE CustomerReservationId = :id
-ORDER BY customerReservationId ASC;
+WHERE customerReservationId = :id;
 
 -- -----------------------------------------------------
 -- Update query for CustomerReservation page Update operation using user input from HTML form.
 -- -----------------------------------------------------
 UPDATE CustomerReservation SET customerId = :customerIdFromDropdown, reservationId= :reservationIdFromDropdown
-WHERE CustomerReservationId = :id
+WHERE customerReservationId = :id
 
 -- -----------------------------------------------------
 -- Dis-associate a Reservation from a Customer (M-to-M relationship deletion)
