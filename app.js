@@ -1,5 +1,12 @@
 // App.js
 
+// Citation for the following code (the entirety of this file):
+// Title: Node.js Starter App
+// Type: Full program
+// Date: 05/25/2023
+// Copied and then modified to fit our database structure:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 /*
     SETUP
 */
@@ -34,7 +41,7 @@ app.get('/customerReservation', function(req, res)
     let query1 = "SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;";
 
     // Declare Query 2
-    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, startDate, endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
     // Declare Query 3
     let query3 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";

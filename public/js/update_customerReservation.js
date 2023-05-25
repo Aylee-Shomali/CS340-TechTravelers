@@ -1,3 +1,10 @@
+// Citation for the following code (the entirety of this file):
+// Title: Node.js Starter App
+// Type: Full program
+// Date: 05/25/2023
+// Copied and then modified to fit our database structure:
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
 // Get the objects we need to modify
 let updateCustomerReservationForm = document.getElementById('update-customerReservation-form');
 
