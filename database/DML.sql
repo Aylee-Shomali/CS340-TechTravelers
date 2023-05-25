@@ -50,27 +50,23 @@ VALUES (:cityName, :stateOrProvince, :countryName);
 -- -----------------------------------------------------
 -- Select query for CustomerReservation page Read operation.
 -- -----------------------------------------------------
-SELECT customerReservationId AS `Customer Reservation Id`, 
-       CONCAT(Customers.firstName, ' ', Customers.lastName) AS `Customer`, reservationId AS `Reservation Id`
-FROM CustomerReservation
-JOIN Customers ON CustomerReservation.customerId = Customers.customerId
+SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId 
+FROM CustomerReservation 
+JOIN Customers ON CustomerReservation.customerId = Customers.customerId 
 ORDER BY customerReservationId ASC;
 
 -- -----------------------------------------------------
 -- Select query for Reservation page Read operation (Also used in CustomerReservations page for reference).
 -- -----------------------------------------------------
-SELECT reservationId AS `Reservation Id`, 
-       CONCAT(Agents.firstName, ' ', Agents.lastName) AS `Agent`, 
-       startDate AS `Start Date`, 
-       endDate AS `End Date`
-FROM Reservations
-JOIN Agents ON Reservations.agentId = Agents.agentId
+SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate 
+FROM Reservations 
+JOIN Agents ON Reservations.agentId = Agents.agentId 
 ORDER BY reservationId ASC;
 
 -- -----------------------------------------------------
 -- Select Query for CustomerReservation page to show Customer dropdown options.
 -- -----------------------------------------------------
-SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `Customer`
+SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` 
 FROM Customers 
 ORDER BY customerId ASC;
 
