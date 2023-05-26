@@ -35,6 +35,8 @@ app.get('/', function(req, res)
     return res.render('index');
 });
 
+// GET ROUTES 
+
 app.get('/customerReservation', function(req, res)
 {
     // Declare Query 1
@@ -69,6 +71,8 @@ app.get('/customerReservation', function(req, res)
     })
 });
 
+
+// POST ROUTES
 app.post('/add-customerReservation', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
@@ -110,6 +114,8 @@ app.post('/add-customerReservation', function(req, res)
     })
 });
 
+
+// DELETE ROUTES
 app.delete('/delete-customerReservation/', function(req,res,next){
   let data = req.body;
   let customerReservationId = parseInt(data.id);
@@ -130,6 +136,8 @@ app.delete('/delete-customerReservation/', function(req,res,next){
             }
 })});
 
+
+// UPDATE ROUTES
 app.put('/put-customerReservation', function(req,res,next){                                   
   let data = req.body;
 
@@ -165,6 +173,9 @@ app.put('/put-customerReservation', function(req,res,next){
                 })
             }
 })});
+
+
+
 
 /*
     LISTENER

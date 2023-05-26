@@ -131,6 +131,13 @@ tr td {
     min-width: 100px;
     border-bottom: 1.5px solid var(--eerie-black);
 }
+/* Playing with new button look */
+/* td.test{
+    padding: 15px 20px;
+    margin: 20px 20px 20px 20px;
+    text-align: center;
+    background-color: var(--silver);
+} */
 
 th {
     background-color: var(--dark-purple);
