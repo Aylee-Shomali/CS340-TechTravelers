@@ -2,3 +2,4 @@
 **/node_modules
 db-connector.json
 .DS_Store
+/.vscode
