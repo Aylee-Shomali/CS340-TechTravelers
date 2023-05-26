@@ -13,7 +13,7 @@ function deleteCustomerReservation(customerReservationId) {
     };
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "/delete-customerReservation-ajax", true);
+    xhttp.open("DELETE", "/delete-customerReservation", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -39,7 +39,7 @@ function deleteRow(customerReservationId){
        //rows would be accessed using the "row" variable assigned in the for loop
        if (table.rows[i].getAttribute("data-value") == customerReservationId) {
             table.deleteRow(i);
-            deleteDropDownMenu(customerReservationId);
+            //deleteDropDownMenu(customerReservationId);
             break;
        }
     }
