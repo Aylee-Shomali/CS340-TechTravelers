@@ -1,5 +1,5 @@
 # We don't want to put the node_modules folder in the repo. All we need to duplicate this project is the package.json file.
 **/node_modules
-database/db-connector.json
+database/db-connector.js
 .DS_Store
 /.vscode
