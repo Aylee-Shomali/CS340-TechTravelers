@@ -14,7 +14,7 @@ function deleteCustomer(customerId) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        id: customerId
+        customerId: customerId
     };
 
 
