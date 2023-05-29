@@ -7,6 +7,11 @@
 
 // code for deleteCustomerReservation using regular javascript/xhttp
 function deleteCustomerReservation(customerReservationId) {
+    // Show a confirm dialog box before actually trying to delete.
+    // Then, cancel if needed.
+    if(!confirm(`Are you sure you would like to delete the record with ID: ${customerReservationId}?`))
+      return;
+
     // Put our data we want to send in a javascript object
     let data = {
         id: customerReservationId
