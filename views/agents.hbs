@@ -1,0 +1,74 @@
+<!-- Citation for the following code (the entirety of this file):
+Title: Node.js Starter App
+Type: Full program
+Date: 05/25/2023
+Copied and then modified to fit our database structure:
+Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+-->
+
+<!-- agents.hbs -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+ <h2>Agents</h2>
+{{!-- Create a table --}}
+<div id="browse">
+ <table id="customerTable" border="1" cellpadding="5">
+    <caption>Current Agents Listing</caption>
+    {{!-- Header section --}}
+    <thead></thead>
+
+    {{!-- Body section --}}
+    <tbody>
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr class="customerCol">
+            {{#each agentData.[0]}}
+            <th class="customerH">
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+
+        {{!-- For each row, print the id and other fields in order --}}
+        {{#each agentData}}
+        <tr data-value={{this.agentId}}>
+            <td>{{this.agentId}}</td>
+            <td>{{this.firstName}}</td>
+            <td>{{this.lastName}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.phoneNumber}}</td>
+            <td>{{this.location}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+ </table>
+</div>
+
+<!-- Insert -->
+<div id="insert">
+        <form id="add-agent-form">
+            <legend><strong>Add Agent</strong></legend>
+            <fieldset class="fields">
+              <label for="firstName" class="required"> First Name </label>
+              <input type="text" name="firstName" required id="input-firstName" maxlength="50"/>
+              <label for="lastName" class="required"> Last Name </label>
+              <input type="text" name="lastName" required id="input-lastName" maxlength="80"/>
+              <label for="email" class="required"> Email </label>
+              <input type="email" name="email" required id="input-email" maxlength="100"/>
+              <label for="phoneNumber" class="required"> Phone Number </label>
+              <input type="text" name="phoneNumber" required id="input-phoneNumber" maxlength="15"/>
+              </br>
+              <label for="locationId"> Location </label>
+              <select name="locationId" id="input-locationId">
+                <option value="0"></option>
+                {{#each locationData}}
+                <option value="{{this.locationId}}">{{this.location}}</option>
+                {{/each}}
+              </select> 
+              <caption>* these fields are required</caption>
+              </fieldset>
+              <input class="btn" type="submit" id="addAgent" value="Add Agent">
+        </form> 
+</div><!-- insert -->
+
+<script src="./js/add_agent.js"></script>

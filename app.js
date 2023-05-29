@@ -85,6 +85,30 @@ app.get('/locations', function(req, res)
     })
 });
 
+app.get('/agents', function(req, res)
+{
+    // Declare Query 1
+    let query1 = "SELECT agentId, firstName, lastName, email, phoneNumber, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location` FROM Agents LEFT JOIN Locations ON Agents.locationId = Locations.locationId ORDER BY agentId ASC;";
+
+    // Declare Query 2
+    let query2 = "SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location` FROM Locations ORDER BY locationId ASC;";
+
+    // Run the 1st query
+    db.pool.query(query1, function(error, rows, fields){
+        // Save the records
+        let agents = rows; 
+
+        // Run the second query.
+        db.pool.query(query2, function(error, rows, fields){
+
+            // Save the records
+            let locations = rows; 
+
+            return res.render('agents', {agentData: agents, locationData: locations});
+        })
+    })
+});
+
 // POST ROUTES
 app.post('/add-customerReservation', function(req, res) 
 {
@@ -156,6 +180,52 @@ app.post('/add-location', function(req, res)
         {
             // If there was no error, get all records.
             query2 = "SELECT locationId, cityName, stateOrProvince, countryName FROM Locations ORDER BY locationId ASC;";
+
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+app.post('/add-agent', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values + Handle additional single quotes.
+    let locationId = data.locationId;
+    if (locationId == 0)
+    locationId = 'NULL';
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Agents (firstName, lastName, email, phoneNumber, locationId) VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.phoneNumber}', ${locationId})`;
+
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, get all records.
+            query2 = "SELECT agentId, firstName, lastName, email, phoneNumber, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location` FROM Agents LEFT JOIN Locations ON Agents.locationId = Locations.locationId ORDER BY agentId ASC;";
 
             db.pool.query(query2, function(error, rows, fields){
 

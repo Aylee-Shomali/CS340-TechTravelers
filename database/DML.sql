@@ -7,28 +7,28 @@
 -- -----------------------------------------------------
 -- Select Query for Agents page for Read operation.
 -- -----------------------------------------------------
-SELECT agentId AS `Agent Id`, 
-       firstName AS `First Name`, 
-       lastName AS `Last Name`, 
-       email AS `Email`, 
-       phoneNumber AS `Phone Number`, 
-       CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`
+SELECT agentId, 
+       firstName, 
+       lastName, 
+       email, 
+       phoneNumber, 
+       CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`
 FROM Agents
-INNER JOIN Locations 
+LEFT JOIN Locations 
 ON Agents.locationId = Locations.locationId
 ORDER BY agentId ASC;
 
 -- -----------------------------------------------------
 -- Select Query for Agents page to show Location dropdown options.
 -- -----------------------------------------------------
-SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`
+SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`
 FROM Locations 
 ORDER BY locationId ASC;
 
 -- -----------------------------------------------------
 -- Insert query for Agents page for Create operation using user input from HTML form.
 -- -----------------------------------------------------
-INSERT INTO agents (firstName, lastName, email, phoneNumber, locationId) 
+INSERT INTO Agents (firstName, lastName, email, phoneNumber, locationId) 
 VALUES (:firstName, :lastName, :email, :phoneNumber, :locationIdFromDropdown);
 
 -- -----------------------------------------------------
