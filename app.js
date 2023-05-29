@@ -111,8 +111,7 @@ app.get('/agents', function(req, res)
 
 app.get('/customers', function (req, res) {
     // Declare Query 1
-    let query1 = "SELECT customerId AS `Customer Id`, firstName AS `First Name`, lastName AS `Last Name`, email AS `Email`, phoneNumber AS `Phone Number`, address AS `Address` FROM Customers ORDER BY customerId ASC; ";
-
+    let query1 = "SELECT * from Customers ORDER BY customerId ASC;";
 
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
@@ -323,7 +322,7 @@ app.delete('/delete-customerReservation/', function(req,res,next){
 app.delete('/delete-customer/', function (req, res, next) {
     let data = req.body;
     let customerId = parseInt(data.customerId);
-    let query = `DELETE FROM Customer WHERE customerId = ?`;
+    let query = `DELETE FROM Customers WHERE customerId = ?`;
 
     // Run the 1st query
     db.pool.query(query, [customerId], function (error, rows, fields) {
@@ -384,7 +383,7 @@ app.put('/put-customer', function (req, res, next) {
 
     queryUpdate = `UPDATE Customer SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
 
-    querySelect = `SELECT customerId AS Customer Id, Customers.firstName AS First Name, Customers.lastName AS Last Name FROM Customers WHERE CustomerId = ?;`
+    querySelect = `SELECT customerId AS 'Customer Id', Customers.firstName AS 'First Name', Customers.lastName AS 'Last Name', Customers.email as 'Email', Customers.phoneNumber AS 'Phone Number', Customers.address AS 'Address' FROM Customers ORDER BY customerId ASC;`
 
     // Run the 1st query
     db.pool.query(queryUpdate, [customerId], function (error, rows, fields) {
