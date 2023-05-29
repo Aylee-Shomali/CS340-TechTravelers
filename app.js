@@ -109,6 +109,20 @@ app.get('/agents', function(req, res)
     })
 });
 
+app.get('/customers', function (req, res) {
+    // Declare Query 1
+    let query1 = "SELECT customerId AS `Customer Id`, firstName AS `First Name`, lastName AS `Last Name`, email AS `Email`, phoneNumber AS `Phone Number`, address AS `Address` FROM Customers ORDER BY customerId ASC; ";
+
+
+    // Run the 1st query
+    db.pool.query(query1, function (error, rows, fields) {
+        // Save the records
+        let customers = rows;
+
+        return res.render('customers', { customerData: customers });
+        })
+});
+
 // POST ROUTES
 app.post('/add-customerReservation', function(req, res) 
 {
@@ -252,7 +266,7 @@ app.post('/add-customer', function (req, res) {
 
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Customers (firstName, lastName, email, phoneNumber, address) VALUES ('${data.firstName}, '${data.lastName}, '${data.email}, '${data.phoneNumber}, '${data.address}`;
+    query1 = `INSERT INTO Customers (firstName, lastName, email, phoneNumber, address) VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.phoneNumber}', '${data.address}')`;
 
     db.pool.query(query1, function (error, rows, fields) {
 
