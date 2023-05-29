@@ -39,15 +39,14 @@ function deleteRow(customerReservationId){
        //rows would be accessed using the "row" variable assigned in the for loop
        if (table.rows[i].getAttribute("data-value") == customerReservationId) {
             table.deleteRow(i);
-            //deleteDropDownMenu(customerReservationId);
+            deleteDropDownMenu(customerReservationId);
             break;
        }
     }
 }
 
-// TODO: Don't think this is needed for this page, likely for others, though.
 function deleteDropDownMenu(customerReservationId){
-  let selectMenu = document.getElementById("mySelect");
+  let selectMenu = document.getElementById("input-customerReservationId-update");
   for (let i = 0; i < selectMenu.length; i++){
     if (Number(selectMenu.options[i].value) === Number(customerReservationId)){
       selectMenu[i].remove();
