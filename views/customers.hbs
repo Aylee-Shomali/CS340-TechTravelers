@@ -1,0 +1,108 @@
+<!-- Citation for the following code (the entirety of this file):
+Title: Node.js Starter App
+Type: Full program
+Date: 05/25/2023
+Copied and then modified to fit our database structure:
+Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+-->
+
+<!-- customer.hbs -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<h2>Customers</h2>
+{{!-- Create a table --}}
+<div id="browse">
+    <table id="customerTable" border="1" cellpadding="5">
+        <caption>Current Customers Listing</caption>
+        {{!-- Header section --}}
+        <thead></thead>
+
+        {{!-- Body section --}}
+        <tbody>
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr class="customerCol">
+                {{#each customerData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+
+            {{!-- For each row, print the id and other fields in order --}}
+            {{#each customerData}}
+            <tr data-value={{this.customerId}}>
+                <td>{{this.customerId}}</td>
+                <td>{{this.firstName}}</td>
+                <td>{{this.lastName}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.phoneNumber}}</td>
+                <td>{{this.address}}</td>
+                <td><button onclick="deleteCustomer({{this.customerId}})">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<!-- Insert -->
+<div id="insert">
+    <form id="add-customer-form">
+        <legend><strong>Add Customer</strong></legend>
+        <fieldset class="fields">
+            <label for="firstName" class="required"> First Name </label>
+            <input type="text" name="firstName" required id="input-firstName" maxlength="50" />
+            <label for="lastName" class="required"> Last Name </label>
+            <input type="text" name="lastName" required id="input-lastName" maxlength="80" />
+            <label for="email" class="required"> Email </label>
+            <input type="email" name="email" required id="input-email" maxlength="100" />
+            <label for="phoneNumber" class="required"> Phone Number </label>
+            <input type="text" name="phoneNumber" class="required" id="input-phoneNumber" maxlength="15" />
+            </br>
+            <label for="address" class="required" id="input-address" maxlength="700"> Address </label> <input type="text" name="address" required>
+            
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="addCustomer" value="Add Customer">
+        <input class="btn" type="button" value="Cancel" onClick="browseCustomer()">
+    </form>
+</div><!-- insert -->
+
+<!-- <p>&nbsp;</p> -->
+<div id="update">
+    <form id="update-customer-form">
+        <legend><strong>Update Customer</strong></legend>
+        <fieldset class="fields">
+            <label>For Customer ID:<strong> 1</strong><br /></label>
+            <br>
+            <label> Customer ID </label>
+            <select name="customerId" id="input-customerId-update">
+                <option value="0">Select a Customer ID</option>
+                {{#each customerData}}
+                <option value="{{this.customerId}}">{{this.customerId}}</option>
+                {{/each}}
+            </select>
+            <br>
+            <label for="firstName" class="required"> First Name </label> <input type="text" name="firstName" required
+                value="Larry">
+            <label for="lastName" class="required"> Last Name </label> <input type="text" name="lastName" required
+                value="Ellison">
+            <label for="email" class="required"> Email </label> <input type="text" name="email" required
+                value="lellison@oracle.com">
+            <br>
+            <label for="phoneNumber" class="required"> Phone Number </label> <input type="text" name="phoneNumber"
+                required value="371-473-3838">
+            <label for="address" class="required"> Address </label> <input type="text" name="address" required
+                value="928 Lombard Street, San Francisco, CA 94133">
+
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="updateCustomer" value="Update Customer">
+        <input class="btn" type="button" value="Cancel" onClick="browseCustomers()">
+    </form>
+</div><!-- update -->
+
+<script src="./js/add_customer.js"></script>
+<script src="./js/update_customer.js"></script>
+<script src="./js/delete_customer.js"></script>
