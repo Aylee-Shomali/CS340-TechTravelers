@@ -12,7 +12,7 @@
 */
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
-PORT        = 8008;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 8007;                 // Set a port number at the top so it's easy to change in the future
 
 // app.js
 const { engine } = require('express-handlebars');
@@ -71,6 +71,19 @@ app.get('/customerReservation', function(req, res)
     })
 });
 
+app.get('/locations', function(req, res)
+{
+    // Declare Query
+    let query = "SELECT locationId, cityName, stateOrProvince, countryName FROM Locations ORDER BY locationId ASC;";
+
+    // Run query
+    db.pool.query(query, function(error, rows, fields){
+        // Save the records
+        let locations = rows; 
+
+        return res.render('locations', {locationData: locations});
+    })
+});
 
 // POST ROUTES
 app.post('/add-customerReservation', function(req, res) 
@@ -114,6 +127,54 @@ app.post('/add-customerReservation', function(req, res)
     })
 });
 
+app.post('/add-location', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values + Handle additional single quotes.
+    let stateOrProvince = data.stateOrProvince;
+    if (stateOrProvince == '')
+        stateOrProvince = 'NULL';
+    else
+        stateOrProvince = `'${data.stateOrProvince}'`;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Locations (cityName, stateOrProvince, countryName)
+    VALUES ('${data.cityName}', ${stateOrProvince}, '${data.countryName}');`;
+
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, get all records.
+            query2 = "SELECT locationId, cityName, stateOrProvince, countryName FROM Locations ORDER BY locationId ASC;";
+
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
 
 // DELETE ROUTES
 app.delete('/delete-customerReservation/', function(req,res,next){
@@ -181,5 +242,5 @@ app.put('/put-customerReservation', function(req,res,next){
     LISTENER
 */
 app.listen(PORT, function(){            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
-    console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+    console.log('DEV SERVER: started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
 });

@@ -1,0 +1,62 @@
+<!-- Citation for the following code (the entirety of this file):
+Title: Node.js Starter App
+Type: Full program
+Date: 05/25/2023
+Copied and then modified to fit our database structure:
+Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+-->
+
+<!-- locations.hbs -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+ <h2>Locations</h2>
+{{!-- Create a table --}}
+<div id="browse">
+ <table id="customerTable" border="1" cellpadding="5">
+    <caption>Current Locations Listing</caption>
+    {{!-- Header section --}}
+    <thead></thead>
+
+    {{!-- Body section --}}
+    <tbody>
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr class="customerCol">
+            {{#each locationData.[0]}}
+            <th class="customerH">
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+
+        {{!-- For each row, print the id and other fields in order --}}
+        {{#each locationData}}
+        <tr data-value={{this.locationId}}>
+            <td>{{this.locationId}}</td>
+            <td>{{this.cityName}}</td>
+            <td>{{this.stateOrProvince}}</td>
+            <td>{{this.countryName}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+ </table>
+</div>
+
+<!-- Insert -->
+<div id="insert">
+        <form id="add-location-form">
+            <legend><strong>Add Location</strong></legend>
+            <fieldset class="fields">
+              <label for="cityName" class="required"> City Name </label>
+              <input type="text" name="cityName" required id="input-cityName" maxlength="50"/>
+              <label for="stateOrProvince"> State/Province </label>
+              <input type="text" name="stateOrProvince" id="input-stateOrProvince" maxlength="50"/>
+              <label for="countryName" class="required"> Country Name </label>
+              <input type="text" name="countryName" required id="input-countryName" maxlength="50"/>
+              <caption>* these fields are required</caption>
+              </fieldset>
+              <input class="btn" type="submit" id="addLocation" value="Add Location">
+        </form> 
+</div><!-- insert -->
+
+<script src="./js/add_location.js"></script>

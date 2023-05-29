@@ -1,4 +1,4 @@
--- Group 6 TechTravelers Project Step 3 Final
+-- Group 6 TechTravelers Project Step 5 Draft
 -- Group Members: Sajidah Wahdy and Aylee Shomali
 -- DML file for TechTravels Database HTML pages.
 
@@ -34,10 +34,10 @@ VALUES (:firstName, :lastName, :email, :phoneNumber, :locationIdFromDropdown);
 -- -----------------------------------------------------
 -- Select query for Locations page Read operation.
 -- -----------------------------------------------------
-SELECT locationId AS `Location Id`, 
-       cityName AS `City Name`, 
-       stateOrProvince AS `State/Province`, 
-       countryName AS `Country Name`
+SELECT locationId, 
+       cityName, 
+       stateOrProvince, 
+       countryName
 FROM Locations
 ORDER BY locationId ASC;
 
