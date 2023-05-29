@@ -246,6 +246,45 @@ app.post('/add-agent', function(req, res)
     })
 });
 
+app.post('/add-customer', function (req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Customers (firstName, lastName, email, phoneNumber, address) VALUES ('${data.firstName}, '${data.lastName}, '${data.email}, '${data.phoneNumber}, '${data.address}`;
+
+    db.pool.query(query1, function (error, rows, fields) {
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else {
+            // If there was no error, get all records.
+            query2 = "SELECT customerId AS `Customer Id`, Customers.firstName AS `First Name`, Customers.lastName AS `Last Name` FROM Customers WHERE CustomerId = '${customerId}' ORDER BY customerId ASC; ";
+
+            db.pool.query(query2, function (error, rows, fields) {
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
 // DELETE ROUTES
 app.delete('/delete-customerReservation/', function(req,res,next){
   let data = req.body;
@@ -267,6 +306,25 @@ app.delete('/delete-customerReservation/', function(req,res,next){
             }
 })});
 
+app.delete('/delete-customer/', function (req, res, next) {
+    let data = req.body;
+    let customerId = parseInt(data.customerId);
+    let query = `DELETE FROM Customer WHERE customerId = ?`;
+
+    // Run the 1st query
+    db.pool.query(query, [customerId], function (error, rows, fields) {
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else {
+            res.sendStatus(204);
+        }
+    })
+});
 
 // UPDATE ROUTES
 app.put('/put-customerReservation', function(req,res,next){                                   
@@ -305,6 +363,40 @@ app.put('/put-customerReservation', function(req,res,next){
             }
 })});
 
+app.put('/put-customer', function (req, res, next) {
+    let data = req.body;
+
+    let customerId = parseInt(data.customerId);
+
+    queryUpdate = `UPDATE Customer SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
+
+    querySelect = `SELECT customerId AS Customer Id, Customers.firstName AS First Name, Customers.lastName AS Last Name FROM Customers WHERE CustomerId = ?;`
+
+    // Run the 1st query
+    db.pool.query(queryUpdate, [customerId], function (error, rows, fields) {
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we run our second query and return that data so we can use it to update the record.
+        // table on the front-end
+        else {
+            // Run the second query
+            db.pool.query(querySelect, [customerId], function (error, rows, fields) {
+
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
 
 
 
