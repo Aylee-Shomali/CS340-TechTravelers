@@ -18,7 +18,7 @@ updateCustomerForm.addEventListener("submit", function (e) {
     let inputCustomerId = document.getElementById("input-customerId-update");
 
     // Get the values from the form fields
-    let customerIdValue = inputCustomerId.value;
+    let customerIdValueUpdate = inputCustomerId.value;
 
     // Currently the database table for customer does not allow updating values to NULL
     // So we must abort if being passed NULL for any values.
@@ -31,7 +31,7 @@ updateCustomerForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        customerId: customerIdValue
+        customerId: customerIdValueUpdate
     }
 
     // Setup our AJAX request
