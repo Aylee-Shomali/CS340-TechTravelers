@@ -52,15 +52,15 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
         <legend><strong>Add Customer</strong></legend>
         <fieldset class="fields">
             <label for="firstName" class="required"> First Name </label>
-            <input type="text" name="firstName" required id="input-firstName" maxlength="50" />
+            <input type="text" name="firstName" id="input-firstName" maxlength="50" />
             <label for="lastName" class="required"> Last Name </label>
-            <input type="text" name="lastName" required id="input-lastName" maxlength="80" />
+            <input type="text" name="lastName" id="input-lastName" maxlength="80" />
             <label for="email" class="required"> Email </label>
-            <input type="email" name="email" required id="input-email" maxlength="100" />
+            <input type="email" name="email" id="input-email" maxlength="100" />
             <label for="phoneNumber" class="required"> Phone Number </label>
             <input type="text" name="phoneNumber" class="required" id="input-phoneNumber" maxlength="15" />
             </br>
-            <label for="address" class="required" id="input-address" maxlength="700"> Address </label> <input type="text" name="address" required>
+            <label for="address" class="required" id="input-address" maxlength="700"> Address </label> <input type="text" name="address">
             
             <caption>* these fields are required</caption>
         </fieldset>
@@ -84,17 +84,16 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
                 {{/each}}
             </select>
             <br>
-            <label for="firstName" class="required" id="input-firstName-update"> First Name </label> <input type="text" name="firstName" required
-                value="Larry">
-            <label for="lastName" class="required" id="input-lastName-update"> Last Name </label> <input type="text" name="lastName" required
-                value="Ellison">
-            <label for="email" class="required" id="input-email-update"> Email </label> <input type="text" name="email" required
-                value="lellison@oracle.com">
+            <label for="firstName" class="required" id="input-firstName-update"> First Name </label> <input type="text" name="firstName"
+                value="">
+            <label for="lastName" class="required" id="input-lastName-update"> Last Name </label> <input type="text" name="lastName"
+                value="">
+            <label for="email" class="required" id="input-email-update"> Email </label> <input type="text" name="email"
+                value="">
             <br>
-            <label for="phoneNumber" class="required" id="input-phoneNumber-update"> Phone Number </label> <input type="text" name="phoneNumber"
-                required value="371-473-3838">
-            <label for="address" class="required" id="input-address-update"> Address </label> <input type="text" name="address" required
-                value="928 Lombard Street, San Francisco, CA 94133">
+            <label for="phoneNumber" class="required" id="input-phoneNumber-update"> Phone Number </label> <input type="text" name="phoneNumber" value="">
+            <label for="address" class="required" id="input-address-update"> Address </label> <input type="text" name="address"
+                value="">
 
             <caption>* these fields are required</caption>
         </fieldset>
