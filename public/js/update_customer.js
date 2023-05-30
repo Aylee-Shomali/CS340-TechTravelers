@@ -15,15 +15,25 @@ updateCustomerForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputCustomerId = document.getElementById("input-customerId-update");
+    let inputCustomerIdUpdate = document.getElementById("input-customerId-update");
+    let inputFirstNameUpdate = document.getElementById("input-firstName-update");
+    let inputLastNameUpdate = document.getElementById("input-lastName-update");
+    let inputEmailUpdate = document.getElementById("input-email-update");
+    let inputPhoneNumberUpdate = document.getElementById("input-phoneNumber-update");
+    let inputAddressUpdate = document.getElementById("input-address-update");
 
     // Get the values from the form fields
-    let customerIdValueUpdate = inputCustomerId.value;
+    let customerIdValueUpdate = inputCustomerIdUpdate.value;
+    let firstNameValueUpdate = inputFirstNameUpdate.value;
+    let lastNameValueUpdate = inputLastNameUpdate.value;
+    let emailValueUpdate = inputEmailUpdate.value;
+    let phoneNumberValueUpdate = inputPhoneNumberUpdate.value;
+    let addressValueUpdate = inputAddressUpdate.value;
 
     // Currently the database table for customer does not allow updating values to NULL
     // So we must abort if being passed NULL for any values.
 
-    if (isNaN(customerIdValue)) {
+    if (isNaN(customerIdValueUpdate)) {
         // Error message here?
         console.log("Null values are not accepted with this input.")
         return;
@@ -31,7 +41,12 @@ updateCustomerForm.addEventListener("submit", function (e) {
 
     // Put our data we want to send in a javascript object
     let data = {
-        customerId: customerIdValueUpdate
+        customerId: customerIdValueUpdate,
+        firstName: firstNameValueUpdate,
+        lastName: lastNameValueUpdate,
+        email: emailValueUpdate,
+        phoneNumber: phoneNumberValueUpdate,
+        address: addressValueUpdate
     }
 
     // Setup our AJAX request
@@ -44,7 +59,12 @@ updateCustomerForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, customerIdValue);
+            updateRow(xhttp.response, customerIdValueUpdate);
+            updateRow(xhttp.response, firstNameValueUpdate);
+            updateRow(xhttp.response, lastNameValueUpdate);
+            updateRow(xhttp.response, emailValueUpdate);
+            updateRow(xhttp.response, phoneNumberValueUpdate);
+            updateRow(xhttp.response, addressValueUpdate);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -71,11 +91,23 @@ function updateRow(data, customerId) {
             // Get the location of the row where we found the matching ID
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of customerId values.
-            let td = updateRowIndex.getElementsByTagName("td")[0];
+            // Get td for designated elements of updated values.
+            let td1 = updateRowIndex.getElementsByTagName("td")[0];//customerID
+            let td2 = updateRowIndex.getElementsByTagName("td")[1];//firstName
+            let td3 = updateRowIndex.getElementsByTagName("td")[2];//lastName
+            let td4 = updateRowIndex.getElementsByTagName("td")[3];//email
+            let td5 = updateRowIndex.getElementsByTagName("td")[4];//phoneNumber
+            let td6 = updateRowIndex.getElementsByTagName("td")[5];//address
 
-            // Reassign customer to the values we updated to
-            td.innerHTML = parsedData[0].customer;
+            // Reassign field inputs to the values we updated to
+            td1.innerText = parsedData[0].customerId;
+            td2.innerHTML = parsedData[0].firstName;
+            td3.innerHTML = parsedData[0].lastName;
+            td4.innerHTML = parsedData[0].email;
+            td5.innerHTML = parsedData[0].phoneNumber;
+            td6.innerHTML = parsedData[0].address;
+
         }
     }
+    window.location.reload();
 }
