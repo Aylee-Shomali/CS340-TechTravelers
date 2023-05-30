@@ -92,22 +92,21 @@ function updateRow(data, customerId) {
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td for designated elements of updated values.
-            let td1 = updateRowIndex.getElementsByTagName("td")[0];//customerID
-            let td2 = updateRowIndex.getElementsByTagName("td")[1];//firstName
-            let td3 = updateRowIndex.getElementsByTagName("td")[2];//lastName
-            let td4 = updateRowIndex.getElementsByTagName("td")[3];//email
-            let td5 = updateRowIndex.getElementsByTagName("td")[4];//phoneNumber
-            let td6 = updateRowIndex.getElementsByTagName("td")[5];//address
+            // let td1 = updateRowIndex.getElementsByTagName("td")[0];//customerID
+            let td1 = updateRowIndex.getElementsByTagName("td")[1];//firstName
+            let td2 = updateRowIndex.getElementsByTagName("td")[2];//lastName
+            let td3 = updateRowIndex.getElementsByTagName("td")[3];//email
+            let td4 = updateRowIndex.getElementsByTagName("td")[4];//phoneNumber
+            let td5 = updateRowIndex.getElementsByTagName("td")[5];//address
 
             // Reassign field inputs to the values we updated to
-            td1.innerText = parsedData[0].customerId;
-            td2.innerHTML = parsedData[0].firstName;
-            td3.innerHTML = parsedData[0].lastName;
-            td4.innerHTML = parsedData[0].email;
-            td5.innerHTML = parsedData[0].phoneNumber;
-            td6.innerHTML = parsedData[0].address;
+            // td1.innerText = parsedData[0].customerId;
+            td1.innerHTML = parsedData[0].firstName;
+            td2.innerHTML = parsedData[0].lastName;
+            td3.innerHTML = parsedData[0].email;
+            td4.innerHTML = parsedData[0].phoneNumber;
+            td5.innerHTML = parsedData[0].address;
 
         }
     }
-    window.location.reload();
 }
