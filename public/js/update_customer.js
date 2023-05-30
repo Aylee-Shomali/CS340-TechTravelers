@@ -109,5 +109,5 @@ function updateRow(data, customerId) {
 
         }
     }
-    window.location.reload();
+    
 }
