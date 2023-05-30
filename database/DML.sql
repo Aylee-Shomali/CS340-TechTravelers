@@ -124,10 +124,13 @@ VALUES (:firstName, :lastName, :email, :phoneNumber, :address);
 -- -----------------------------------------------------
 -- Select query to show data for existing record for Customer page Update operation. (Also used to show values in DELETE confirmation message)
 -- -----------------------------------------------------
-SELECT customerId AS `Customer Id`, Customers.firstName AS `First Name`, Customers.lastName AS `Last Name`
-FROM Customers
-WHERE CustomerId = :id
-ORDER BY customerId ASC;
+-- SELECT customerId AS `Customer Id`, Customers.firstName AS `First Name`, Customers.lastName AS `Last Name`
+-- FROM Customers
+-- WHERE CustomerId = :id
+-- ORDER BY customerId ASC;
+SELECT Customers.customerId, Customers.firstName, Customers.lastName, Customers.email, Customers.phoneNumber, Customers.address 
+FROM Customers 
+ORDER BY customerId ASC; 
 
 -- -----------------------------------------------------
 -- Update query for Customer page Update operation using user input from HTML form.
