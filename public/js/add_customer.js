@@ -87,6 +87,7 @@ addRowToTable = (data) => {
     let emailCell = document.createElement("TD");
     let phoneNumberCell = document.createElement("TD");
     let addressCell = document.createElement("TD");
+    let deleteCellOuter = document.createElement("TD");
 
     // Fill the cells with correct data
     idCell.innerText = newRow.customerId;
