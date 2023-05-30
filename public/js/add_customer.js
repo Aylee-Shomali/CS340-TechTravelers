@@ -89,7 +89,7 @@ addRowToTable = (data) => {
     let addressCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    idCell.innerText = newRow.agentId;
+    idCell.innerText = newRow.customerId;
     firstNameCell.innerText = newRow.firstName;
     lastNameCell.innerText = newRow.lastName;
     emailCell.innerText = newRow.email;
