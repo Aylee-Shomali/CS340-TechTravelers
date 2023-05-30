@@ -109,4 +109,5 @@ function updateRow(data, customerId) {
 
         }
     }
+
 }
