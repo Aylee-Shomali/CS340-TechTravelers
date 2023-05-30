@@ -263,6 +263,10 @@ app.post('/add-customer', function (req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
+    // Capture NULL values + Handle additional single quotes.
+    let customerId = data.customerId;
+    if (customerId == 0)
+        customerId = 'NULL';
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Customers (firstName, lastName, email, phoneNumber, address) VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.phoneNumber}', '${data.address}')`;
@@ -278,7 +282,7 @@ app.post('/add-customer', function (req, res) {
         }
         else {
             // If there was no error, get all records.
-            query2 = "SELECT customerId AS `Customer Id`, Customers.firstName AS `First Name`, Customers.lastName AS `Last Name` FROM Customers WHERE CustomerId = '${customerId}' ORDER BY customerId ASC; ";
+            query2 = "SELECT customerId AS`Customer Id`, Customers.firstName AS`First Name`, Customers.lastName AS`Last Name` FROM Customers WHERE CustomerId = '${customerId}' ORDER BY customerId ASC; ";
 
             db.pool.query(query2, function (error, rows, fields) {
 
