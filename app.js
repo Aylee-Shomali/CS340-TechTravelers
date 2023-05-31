@@ -386,7 +386,7 @@ app.put('/put-customer', function (req, res, next) {
     querySelect = `SELECT Customers.customerId, Customers.firstName, Customers.lastName , Customers.email, Customers.phoneNumber, Customers.address FROM Customers ORDER BY customerId ASC;`;
 
     // Run the 1st query with passing additional parameters in []
-    db.pool.query(queryUpdate, [customerId, firstName, lastName, email, phoneNumber, address], function (error, rows, fields) {
+    db.pool.query(queryUpdate, [data.customerId, data.firstName, data.lastName, data.email, data.phoneNumber, data.address], function (error, rows, fields) {
         if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
