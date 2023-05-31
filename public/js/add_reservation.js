@@ -81,7 +81,7 @@ addRowToTable = (data) => {
 
     // Fill the cells with correct data
     idCell.innerText = newRow.reservationId;
-    agentIdCell.innerText = newRow.agentId;
+    agentIdCell.innerText = newRow.agent;//not agentId so name is displayed
     startDateCell.innerText = newRow.startDate;
     endDateCell.innerText = newRow.endDate;
 
