@@ -383,11 +383,7 @@ app.put('/put-customer', function (req, res, next) {
 
     queryUpdate = `UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
 
-    //`UPDATE Customers SET customerId = ? WHERE Customers.customerId = ?`
-
-    querySelect = `SELECT customerId AS'Customer Id', Customers.firstName AS'First Name', Customers.lastName AS'Last Name', Customers.email AS'Email', Customers.phoneNumber AS'Phone Number', Customers.address AS'Address' FROM Customers ORDER BY customerId ASC;`;
-    
-    //SELECT * FROM Customers WHERE customerId = ?
+    querySelect = `SELECT Customer.customerId, Customers.firstName, Customers.lastName , Customers.email, Customers.phoneNumber, Customers.address FROM Customers ORDER BY customerId ASC;`;
 
     // Run the 1st query with passing additional parameters in []
     db.pool.query(queryUpdate, [customerId, firstName, lastName, email, phoneNumber, address], function (error, rows, fields) {
@@ -415,10 +411,6 @@ app.put('/put-customer', function (req, res, next) {
     })
 });
 
-//// Capture NULL values + Handle additional single quotes.
-// let customerId = data.customerId;
-// if (customerId == 0)
-//     customerId = 'NULL';
 
 /*
     LISTENER
