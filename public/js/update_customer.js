@@ -15,20 +15,20 @@ updateCustomerForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputCustomerId = document.getElementById("input-customerId-update");
-    let inputFirstName = document.getElementById("input-firstName-update");
-    let inputLastName = document.getElementById("input-lastName-update");
-    let inputEmail = document.getElementById("input-email-update");
-    let inputPhoneNumber = document.getElementById("input-phoneNumber-update");
-    let inputAddress = document.getElementById("input-address-update");
+    let = document.getElementById("input-customerId-update");
+    let  = document.getElementById("input-firstName-update");
+    let  = document.getElementById("input-lastName-update");
+    let  = document.getElementById("input-email-update");
+    let  = document.getElementById("input-phoneNumber-update");
+    let  = document.getElementById("input-address-update");
 
     // Get the values from the form fields
-    let customerIdValue = inputCustomerId.value;
-    let firstNameValue = inputFirstName.value;
-    let lastNameValue = inputLastName.value;
-    let emailValue = inputEmail.value;
-    let phoneNumberValue = inputPhoneNumber.value;
-    let addressValue = inputAddress.value;
+    let  = inputCustomerId.value;
+    let  = inputFirstName.value;
+    let  = inputLastName.value;
+    let  = inputEmail.value;
+    let  = inputPhoneNumber.value;
+    let  = inputAddress.value;
 
     // Currently the database table for customer does not allow updating values to NULL
     // So we must abort if being passed NULL for any values.
@@ -63,8 +63,8 @@ updateCustomerForm.addEventListener("submit", function (e) {
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
-            // Add the new data to the table
-            updateRow(xhttp.response, customerIdValue);
+            // Add the new data to the table via PK customerIdValue; don't add the other values
+            updateRow(xhttp.response,);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
