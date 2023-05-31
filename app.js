@@ -409,6 +409,26 @@ app.delete('/delete-customer/', function (req, res, next) {
     })
 });
 
+app.delete('/delete-reservation/', function (req, res, next) {
+    let data = req.body;
+    let reservationId = parseInt(data.reservationId);
+    let query = `DELETE FROM Reservations WHERE reservationId = ?`;
+
+    // Run the 1st query
+    db.pool.query(query, [reservationId], function (error, rows, fields) {
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else {
+            res.sendStatus(204);
+        }
+    })
+});
+
 //////////////////////
 // UPDATE ROUTES : EDIT/UPDATE
 //////////////////////

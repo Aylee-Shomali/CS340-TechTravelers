@@ -6,7 +6,7 @@ Copied and then modified to fit our database structure:
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 -->
 
-<!-- customer.hbs -->
+<!-- reservation.hbs -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <h2>Reservations</h2>
@@ -37,7 +37,7 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
                 <td>{{this.agent}}</td>
                 <td>{{this.startDate}}</td>
                 <td>{{this.endDate}}</td>
-                <td><button onclick="deleteCustomer({{this.customerId}})">Delete</button></td>
+                <td><button onclick="deleteReservation({{this.reservationId}})">Delete</button></td>
             </tr>
             {{/each}}
         </tbody>
@@ -105,5 +105,5 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 </div><!-- update --> --}}
 
 <script src="./js/add_reservation.js"></script>
-{{!-- <script src="./js/update_reservation.js"></script>
-<script src="./js/delete_reservation.js"></script> --}}
+{{!-- <script src="./js/update_reservation.js"></script>--}}
+<script src="./js/delete_reservation.js"></script>
