@@ -263,7 +263,6 @@ app.post('/add-customer', function (req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
-
     // Create the query and run it on the database
     query1 = `INSERT INTO Customers (firstName, lastName, email, phoneNumber, address) VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.phoneNumber}', '${data.address}')`;
 
@@ -348,6 +347,7 @@ app.put('/put-customerReservation', function(req,res,next){
   let reservationId = parseInt(data.reservationId);
 
   queryUpdate = `UPDATE CustomerReservation SET customerId = ?, reservationId = ? WHERE customerReservationId = ?`;
+
   querySelect = `SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId WHERE CustomerReservationId = ?;`
 
         // Run the 1st query
@@ -383,10 +383,12 @@ app.put('/put-customer', function (req, res, next) {
 
     queryUpdate = `UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
 
-    querySelect = `SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers WHERE customerId = ?;`;
+    // since not referring to another table, no need to refer to Table.columnName ie as below
+    querySelect = `SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers WHERE customerId = ?`;
 
-    // Run the 1st query with passing additional parameters in []
+    // Run the 1st query with passing additional parameters in [] in same order as in queryUpdate but PK at the end
     db.pool.query(queryUpdate, [data.firstName, data.lastName, data.email, data.phoneNumber, data.address, data.customerId], function (error, rows, fields) {
+
         if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -399,6 +401,7 @@ app.put('/put-customer', function (req, res, next) {
         else {
             // Run the second query
             db.pool.query(querySelect, [customerId], function (error, rows, fields) {
+
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
