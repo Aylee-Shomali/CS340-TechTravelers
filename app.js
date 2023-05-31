@@ -35,7 +35,9 @@ app.get('/', function(req, res)
     return res.render('index');
 });
 
-// GET ROUTES 
+//////////////////////
+// GET ROUTES: READ/SELECT
+//////////////////////
 
 app.get('/customerReservation', function(req, res)
 {
@@ -122,7 +124,34 @@ app.get('/customers', function (req, res) {
         })
 });
 
-// POST ROUTES
+app.get('/reservations', function (req, res) {
+    // Declare Query1
+    let query = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+
+    // Declare Query 2
+    let query2 = "SELECT agentId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent` FROM Agents ORDER BY agentId ASC;";
+
+    // Run 1st query
+    db.pool.query(query, function (error, rows, fields) {
+        // Save the records
+        let reservations = rows;
+
+        // Run the second query.
+        db.pool.query(query2, function (error, rows, fields) {
+
+        // Save the records
+        let agents = rows;
+
+        return res.render('reservations', 
+        { reservationData: reservations,
+        agentData: agents });
+         });
+    })
+});
+
+//////////////////////
+// POST ROUTES: ADD/INSERT
+//////////////////////
 app.post('/add-customerReservation', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
@@ -297,7 +326,50 @@ app.post('/add-customer', function (req, res) {
     })
 });
 
+
+app.post('/add-reservation', function (req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    
+    query1 = `INSERT INTO Reservations (agentId, startDate, endDate) VALUES (${data.agentId}, ${data.startDate}, ${data.endDate});`;
+
+    db.pool.query(query1, function (error, rows, fields) {
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else {
+            // If there was no error, get all records.
+            query2 = `SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;`;
+            
+
+            db.pool.query(query2, function (error, rows, fields) {
+
+            //     // If there was an error on the second query, send a 400
+                if (error) {
+
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+//////////////////////
 // DELETE ROUTES
+//////////////////////
 app.delete('/delete-customerReservation/', function(req,res,next){
   let data = req.body;
   let customerReservationId = parseInt(data.id);
@@ -338,7 +410,9 @@ app.delete('/delete-customer/', function (req, res, next) {
     })
 });
 
-// UPDATE ROUTES
+//////////////////////
+// UPDATE ROUTES : EDIT/UPDATE
+//////////////////////
 app.put('/put-customerReservation', function(req,res,next){                                   
   let data = req.body;
 
@@ -413,7 +487,7 @@ app.put('/put-customer', function (req, res, next) {
     })
 });
 
-
+//////////////////////
 /*
     LISTENER
 */

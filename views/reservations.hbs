@@ -1,0 +1,109 @@
+<!-- Citation for the following code (the entirety of this file):
+Title: Node.js Starter App
+Type: Full program
+Date: 05/25/2023
+Copied and then modified to fit our database structure:
+Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+-->
+
+<!-- customer.hbs -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<h2>Reservations</h2>
+{{!-- Create a table --}}
+<div id="browse">
+    <table id="customerTable" border="1" cellpadding="5">
+        <caption>Current Reservations Listing</caption>
+        {{!-- Header section --}}
+        <thead></thead>
+
+        {{!-- Body section --}}
+        <tbody>
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr class="customerCol">
+                {{#each reservationData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+
+            {{!-- For each row, print the id and other fields in order --}}
+            {{#each reservationData}}
+            <tr data-value={{this.reservationId}}>
+                <td>{{this.reservationId}}</td>
+                <td>{{this.agent}}</td>
+                <td>{{this.startDate}}</td>
+                <td>{{this.endDate}}</td>
+                <td><button onclick="deleteCustomer({{this.customerId}})">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<!-- Insert -->
+<div id="insert">
+    <form id="add-reservation-form">
+        <legend><strong>Add Reservation</strong></legend>
+        <fieldset class="fields">
+            <label for="reservationId" class="required"> Reservation Id </label>
+                <input type="number" name="reservationId" id="input-reservationId" maxlength="50" />
+            <label for="agent" class="required"> Agent </label>
+                <select name="agent" id="input-agentId">
+                    <option value="0">Select an Agent</option>
+                    {{#each agentData}}
+                    <option value="{{this.agentId}}">{{this.agent}}</option>
+                    {{/each}}
+                </select>
+            <label for="startDate"> Start Date </label>
+                <input type="date" name="startDate" id="input-startDate" maxlength="8" />
+            <label for="endDate"> End Date </label>
+                <input type="date" name="endDate"  id="input-endDate" maxlength="8" />
+            </br>
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="addReservation" value="Add Reservation">
+        {{!-- cancel button: enhancement? --}}
+    </form>
+</div><!-- insert -->
+
+<!-- <p>&nbsp;</p> -->
+{{!-- <div id="update">
+    <form id="update-customer-form">
+        <legend><strong>Update Customer</strong></legend>
+        <fieldset class="fields">
+            <label>For Customer ID:<strong> 1</strong><br /></label>
+            <br>
+            <label> Customer ID </label>
+            <select name="customerId" id="input-customerId-update">
+                <option value="0">Select a Customer ID</option>
+                {{#each customerData}}
+                <option value="{{this.customerId}}">{{this.customerId}}</option>
+                {{/each}}
+            </select>
+            <br>
+            <label for="firstName" class="required"> First Name </label>
+            <input type="text" name="firstName" id="input-firstName-update" value="" maxlength="50">
+            <label for="lastName" class="required"> Last Name </label>
+            <input type="text" name="lastName" value="" maxlength="80" id="input-lastName-update">
+            <label for="email" class="required"> Email </label>
+            <input type="text" name="email" value="" maxlength="100" id="input-email-update">
+            <br>
+            <label for="phoneNumber" class="required"> Phone Number </label>
+            <input type="text" name="phoneNumber" value="" id="input-phoneNumber-update" maxlength="15">
+            <label for="address" class="required"> Address </label>
+            <input type="text" name="address" value="" id="input-address-update" maxlength="700">
+
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="updateCustomer" value="Update Customer"> --}}
+        {{!-- cancel button: enhancement? --}}
+    {{!-- </form>
+</div><!-- update --> --}}
+
+<script src="./js/add_reservation.js"></script>
+{{!-- <script src="./js/update_reservation.js"></script>
+<script src="./js/delete_reservation.js"></script> --}}
