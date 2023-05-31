@@ -15,7 +15,6 @@ addReservationForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    //let inputReservationId = document.getElementById("input-reservationId");
     let inputAgentId = document.getElementById("input-agentId");
     let inputStartDate = document.getElementById("input-startDate");
     let inputEndDate = document.getElementById("input-endDate");
@@ -26,16 +25,6 @@ addReservationForm.addEventListener("submit", function (e) {
     let endDateValue = inputEndDate.value;
 
 
-    // Currently the database table for customer does not allow updating values to NULL
-    // So we must abort if being passed NULL for any values.
-    // Enforcing that inputs are not empty
-    if (isNaN(reservationIdValue)
-        | agentIdValue == "")
-        {
-        // Error message here.
-        console.log("Null values are not accepted with this input.")
-        return;
-    }
     // Put our data we want to send in a javascript object
     let data = {
         agentId: agentIdValue,
