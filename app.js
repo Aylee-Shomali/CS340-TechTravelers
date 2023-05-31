@@ -348,7 +348,6 @@ app.post('/add-reservation', function (req, res) {
             // If there was no error, get all records.
             query2 = `SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;`;
             
-
             db.pool.query(query2, function (error, rows, fields) {
 
             //     // If there was an error on the second query, send a 400
