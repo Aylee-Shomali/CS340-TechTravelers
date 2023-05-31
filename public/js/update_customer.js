@@ -15,38 +15,43 @@ updateCustomerForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get form fields we need to get data from
-    let inputCustomerIdUpdate = document.getElementById("input-customerId-update");
-    let inputFirstNameUpdate = document.getElementById("input-firstName-update");
-    let inputLastNameUpdate = document.getElementById("input-lastName-update");
-    let inputEmailUpdate = document.getElementById("input-email-update");
-    let inputPhoneNumberUpdate = document.getElementById("input-phoneNumber-update");
-    let inputAddressUpdate = document.getElementById("input-address-update");
+    let inputCustomerId = document.getElementById("input-customerId-update");
+    let inputFirstName = document.getElementById("input-firstName-update");
+    let inputLastName = document.getElementById("input-lastName-update");
+    let inputEmail = document.getElementById("input-email-update");
+    let inputPhoneNumber = document.getElementById("input-phoneNumber-update");
+    let inputAddress = document.getElementById("input-address-update");
 
     // Get the values from the form fields
-    let customerIdValueUpdate = inputCustomerIdUpdate.value;
-    let firstNameValueUpdate = inputFirstNameUpdate.value;
-    let lastNameValueUpdate = inputLastNameUpdate.value;
-    let emailValueUpdate = inputEmailUpdate.value;
-    let phoneNumberValueUpdate = inputPhoneNumberUpdate.value;
-    let addressValueUpdate = inputAddressUpdate.value;
+    let customerIdValue = inputCustomerId.value;
+    let firstNameValue = inputFirstName.value;
+    let lastNameValue = inputLastName.value;
+    let emailValue = inputEmail.value;
+    let phoneNumberValue = inputPhoneNumber.value;
+    let addressValue = inputAddress.value;
 
     // Currently the database table for customer does not allow updating values to NULL
     // So we must abort if being passed NULL for any values.
 
-    if (isNaN(customerIdValueUpdate)) {
-        // Error message here?
+    if (isNaN(customerIdValue) 
+        | firstNameValue == ""
+        | lastNameValue == ""
+        | emailValue == "" 
+        | phoneNumberValue == ""
+        | addressValue == "") {
+        // Error message here.
         console.log("Null values are not accepted with this input.")
         return;
     }
 
     // Put our data we want to send in a javascript object
     let data = {
-        customerId: customerIdValueUpdate,
-        firstName: firstNameValueUpdate,
-        lastName: lastNameValueUpdate,
-        email: emailValueUpdate,
-        phoneNumber: phoneNumberValueUpdate,
-        address: addressValueUpdate
+        customerId: customerIdValue,
+        firstName: firstNameValue,
+        lastName: lastNameValue,
+        email: emailValue,
+        phoneNumber: phoneNumberValue,
+        address: addressValue
     }
 
     // Setup our AJAX request
@@ -59,12 +64,7 @@ updateCustomerForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, customerIdValueUpdate);
-            updateRow(xhttp.response, firstNameValueUpdate);
-            updateRow(xhttp.response, lastNameValueUpdate);
-            updateRow(xhttp.response, emailValueUpdate);
-            updateRow(xhttp.response, phoneNumberValueUpdate);
-            updateRow(xhttp.response, addressValueUpdate);
+            updateRow(xhttp.response, customerIdValue);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -92,7 +92,6 @@ function updateRow(data, customerId) {
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
             // Get td for designated elements of updated values.
-            // let td1 = updateRowIndex.getElementsByTagName("td")[0];//customerID
             let td1 = updateRowIndex.getElementsByTagName("td")[1];//firstName
             let td2 = updateRowIndex.getElementsByTagName("td")[2];//lastName
             let td3 = updateRowIndex.getElementsByTagName("td")[3];//email
@@ -100,7 +99,6 @@ function updateRow(data, customerId) {
             let td5 = updateRowIndex.getElementsByTagName("td")[5];//address
 
             // Reassign field inputs to the values we updated to
-            // td1.innerText = parsedData[0].customerId;
             td1.innerHTML = parsedData[0].firstName;
             td2.innerHTML = parsedData[0].lastName;
             td3.innerHTML = parsedData[0].email;

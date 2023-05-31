@@ -383,10 +383,10 @@ app.put('/put-customer', function (req, res, next) {
 
     queryUpdate = `UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
 
-    querySelect = `SELECT Customers.customerId, Customers.firstName, Customers.lastName , Customers.email, Customers.phoneNumber, Customers.address FROM Customers WHERE customerId = ? ORDER BY customerId ASC;`;
+    querySelect = `SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers WHERE customerId = ?;`;
 
     // Run the 1st query with passing additional parameters in []
-    db.pool.query(queryUpdate, [data.customerId, data.firstName, data.lastName, data.email, data.phoneNumber, data.address], function (error, rows, fields) {
+    db.pool.query(queryUpdate, [data.firstName, data.lastName, data.email, data.phoneNumber, data.address, data.customerId], function (error, rows, fields) {
         if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -399,7 +399,6 @@ app.put('/put-customer', function (req, res, next) {
         else {
             // Run the second query
             db.pool.query(querySelect, [customerId], function (error, rows, fields) {
-
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
