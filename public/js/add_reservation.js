@@ -30,7 +30,7 @@ addReservationForm.addEventListener("submit", function (e) {
     // So we must abort if being passed NULL for any values.
     // Enforcing that inputs are not empty
     if (isNaN(reservationIdValue)
-        | agentIdValue == ""
+        | agentIdValue == "")
         {
         // Error message here.
         console.log("Null values are not accepted with this input.")
