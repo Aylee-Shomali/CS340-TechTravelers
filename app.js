@@ -383,7 +383,7 @@ app.put('/put-customer', function (req, res, next) {
 
     queryUpdate = `UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
 
-    querySelect = `SELECT Customers.customerId, Customers.firstName, Customers.lastName , Customers.email, Customers.phoneNumber, Customers.address FROM Customers ORDER BY customerId ASC;`;
+    querySelect = `SELECT Customers.customerId, Customers.firstName, Customers.lastName , Customers.email, Customers.phoneNumber, Customers.address FROM Customers WHERE customerId = ? ORDER BY customerId ASC;`;
 
     // Run the 1st query with passing additional parameters in []
     db.pool.query(queryUpdate, [data.customerId, data.firstName, data.lastName, data.email, data.phoneNumber, data.address], function (error, rows, fields) {
