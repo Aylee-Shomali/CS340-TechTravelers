@@ -84,7 +84,6 @@ addRowToTable = (data) => {
     agentIdCell.innerText = newRow.agent;//not agentId so name is displayed
     startDateCell.innerText = newRow.startDate;
     endDateCell.innerText = newRow.endDate;
-    console.log(startDateCell) // DELETE ME WHEN DONE*******
 
     // Define the actual delete button element.
     deleteCellInner = document.createElement("button");
@@ -102,7 +101,7 @@ addRowToTable = (data) => {
     row.appendChild(startDateCell);
     row.appendChild(endDateCell);
     row.appendChild(deleteCellOuter);
-    console.log(startDateCell) // DELETE ME WHEN DONE*******
+    
     
     // Add a custom row attribute so the deleteRow function can find a newly added row
     row.setAttribute('data-value', newRow.reservationId);
@@ -114,9 +113,10 @@ addRowToTable = (data) => {
 
     // Find drop down menu, create a new option, fill data in the option (full name, id),
     // then append option to drop down menu so newly created rows via ajax will be found in it without needing a refresh
-    let selectMenu = document.getElementById("input-reservationId-update");
-    let option = document.createElement("option");
-    option.text = newRow.reservationId;
-    option.value = newRow.reservationId;
-    selectMenu.add(option);
+    // WHEN USING UPDATE, UNCOMMENT THIS CODE
+    // let selectMenu = document.getElementById("input-reservationId-update");
+    // let option = document.createElement("option");
+    // option.text = newRow.reservationId;
+    // option.value = newRow.reservationId;
+    // selectMenu.add(option);
 }

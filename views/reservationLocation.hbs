@@ -1,0 +1,134 @@
+<!-- Citation for the following code (the entirety of this file):
+Title: Node.js Starter App
+Type: Full program
+Date: 05/25/2023
+Copied and then modified to fit our database structure:
+Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+-->
+
+<!-- reservationLocation.hbs -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<h2>ReservationLocation</h2>
+{{!-- Create a table --}}
+<div id="browse">
+    <table id="customerTable" border="1" cellpadding="5">
+        <caption>Current ReservationLocation Listing</caption>
+        {{!-- Header section --}}
+        <thead></thead>
+
+        {{!-- Body section --}}
+        <tbody>
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr class="customerCol">
+                {{#each reservationLocationData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
+                <th>Delete</th>
+            </tr>
+
+            {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+            {{#each reservationLocationData}}
+            <tr data-value={{this.reservationLocationId}}>
+                <td>{{this.reservationLocationId}}</td>
+                <td>{{this.locationId}}</td>
+                <td>{{this.reservationId}}</td>
+                <td><button onclick="deletereservationLocation({{this.reservationLocationId}})">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div id="reference">
+    <h3>Reservations</h3>
+    <table id="customerTable" border="1" cellpadding="5">
+        <caption>Reservations Listing (For Reference)</caption>
+        <thead></thead>
+        <tbody>
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr class="customerCol">
+                {{#each reservationData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
+            </tr>
+
+            {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+            {{#each reservationData}}
+            <tr data-value={{this.reservationId}}>
+                <td>{{this.reservationId}}</td>
+                <td>{{this.agent}}</td>
+                <td>{{this.startDate}}</td>
+                <td>{{this.endDate}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div> <!-- reference -->
+
+<!-- Insert -->
+<div id="insert">
+    <form id="add-reservationLocation-form">
+        <legend><strong>Add Reservation Location</strong></legend>
+        <fieldset class="fields">
+            <label for="location" class="required"> Location </label>
+            <select name="location" required id="input-locationId">
+                <option value="0">Select a Location</option>
+                {{#each locationData}}
+                <option value="{{this.locatioId}}">{{this.location}}</option>
+                {{/each}}
+            </select>
+            <label for="reservationId" class="required"> Reservation ID </label>
+            <select name="reservationId" required id="input-reservationId">
+                <option value="0">Select a Reservation ID</option>
+                {{#each reservationData}}
+                <option value="{{this.reservationId}}">{{this.reservationId}}</option>
+                {{/each}}
+            </select>
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="addReservationLocation" value="Add ReservationLocation">
+    </form>
+</div><!-- insert -->
+
+<!-- Update -->
+<div id="update">
+    <form id="update-reservationLocation-form">
+        <legend><strong>Update Reservation Location</strong></legend>
+        <fieldset class="fields">
+            <label class="required">For Location ID:</label>
+            <select name="id" required id="input-locationId-update">
+                <option value="0">Select a Location Id</option>
+                {{#each locationData}}
+                <option value="{{this.locationId}}">{{this.location}}</option>
+                {{/each}}
+            </select>
+            <label for="reservationId" class="required"> Reservation ID </label>
+            <select name="reservationId" required id="input-reservationId-update">
+                <option value="0">Select a Reservation ID</option>
+                {{#each reservationIdData}}
+                <option value="{{this.reservationId}}">{{this.reservationId}}</option>
+                {{/each}}
+            </select>
+            <label for="reservationId" class="required"> Reservation ID </label>
+            <select name="reservationId" required id="input-reservationId-update">
+                <option value="0">Select a Reservation ID</option>
+                {{#each reservationData}}
+                <option value="{{this.reservationId}}">{{this.reservationId}}</option>
+                {{/each}}
+            </select>
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="updateReservationLocation" value="Update ReservationLocation">
+    </form>
+</div><!-- update -->
+
+<script src="./js/add_customerReservation.js"></script>
+<script src="./js/update_customerReservation.js"></script>
+<script src="./js/delete_customerReservation.js"></script>

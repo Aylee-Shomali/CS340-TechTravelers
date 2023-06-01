@@ -149,6 +149,41 @@ app.get('/reservations', function (req, res) {
     })
 });
 
+//UPDATE THIS ACCORDINGLY
+app.get('/reservationLocation', function (req, res) {
+    // Declare Query 1
+    // let query1 = "SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;";
+
+    // Declare Query 2
+    // let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+
+    // Declare Query 3
+    // let query3 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
+
+    // Run the 1st query
+    db.pool.query(query1, function (error, rows, fields) {
+        // Save the records
+        let reservationLocations = rows;
+
+        // Run the second query.
+        db.pool.query(query2, function (error, rows, fields) {
+
+            // Save the records
+            let locations = rows;
+
+            // Run the third query.
+            db.pool.query(query3, function (error, rows, fields) {
+
+                // Save the records
+                let reservations = rows;
+
+                return res.render('reservationLocation', { reservationLocationData: reservationLocations, locationIdData: locations, reservationIdData: reservations });
+            })
+        })
+    })
+});
+
+
 //////////////////////
 // POST ROUTES: ADD/INSERT
 //////////////////////
@@ -332,11 +367,12 @@ app.post('/add-reservation', function (req, res) {
     let data = req.body;
 
     // Capture NULL values + Handle additional single quotes.
-    let startDate = Date(data.startDate);
-    let endDate = Date(data.endDate);
+    //data.startDate gives "yyyy-mm-dd" JSON format
+    let startDate = data.startDate; 
+    let endDate = data.endDate;
     
     // if (isNaN(startDate) | (isNaN(endDate)))
-    if (startDate == "" | !startDate)
+    if (startDate == "")
     {
         startDate = 'NULL';
 
@@ -345,7 +381,7 @@ app.post('/add-reservation', function (req, res) {
         startDate = `'${data.startDate}'`;
     }
 
-    if (endDate == "" | !endDate)
+    if (endDate == "")
     {
         endDate = 'NULL';
     }
@@ -354,8 +390,9 @@ app.post('/add-reservation', function (req, res) {
     }
 
     // Create the query and run it on the database
+    // date variables are listed directly without prefix ".data" so treated as a string w/ single quotes ie: "'yyyy-mm-dd'"
     
-    query1 = `INSERT INTO Reservations (agentId, startDate, endDate) VALUES (${data.agentId}, ${data.startDate}, ${data.endDate});`;
+    query1 = `INSERT INTO Reservations (agentId, startDate, endDate) VALUES (${data.agentId}, ${startDate}, ${endDate});`;
 
     db.pool.query(query1, function (error, rows, fields) {
 
