@@ -84,6 +84,7 @@ addRowToTable = (data) => {
     agentIdCell.innerText = newRow.agent;//not agentId so name is displayed
     startDateCell.innerText = newRow.startDate;
     endDateCell.innerText = newRow.endDate;
+    console.log(startDateCell) // DELETE ME WHEN DONE*******
 
     // Define the actual delete button element.
     deleteCellInner = document.createElement("button");
@@ -101,7 +102,8 @@ addRowToTable = (data) => {
     row.appendChild(startDateCell);
     row.appendChild(endDateCell);
     row.appendChild(deleteCellOuter);
-
+    console.log(startDateCell) // DELETE ME WHEN DONE*******
+    
     // Add a custom row attribute so the deleteRow function can find a newly added row
     row.setAttribute('data-value', newRow.reservationId);
 

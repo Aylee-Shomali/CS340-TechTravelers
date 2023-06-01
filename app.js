@@ -331,6 +331,28 @@ app.post('/add-reservation', function (req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
+    // Capture NULL values + Handle additional single quotes.
+    let startDate = Date(data.startDate);
+    let endDate = Date(data.endDate);
+    
+    // if (isNaN(startDate) | (isNaN(endDate)))
+    if (startDate == "" | !startDate)
+    {
+        startDate = 'NULL';
+
+    }
+    else{
+        startDate = `'${data.startDate}'`;
+    }
+
+    if (endDate == "" | !endDate)
+    {
+        endDate = 'NULL';
+    }
+    else{  
+        endDate = `'${data.endDate}'`;
+    }
+
     // Create the query and run it on the database
     
     query1 = `INSERT INTO Reservations (agentId, startDate, endDate) VALUES (${data.agentId}, ${data.startDate}, ${data.endDate});`;
