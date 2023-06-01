@@ -5,22 +5,20 @@
 // Copied and then modified to fit our database structure:
 // Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
-// code for deleteReservation using regular javascript/xhttp
-function deleteReservation(reservationId) {
+// code for deleteCustomerReservation using regular javascript/xhttp
+function deleteReservationLocation(reservationLocationId) {
     // Show a confirm dialog box before actually trying to delete.
     // Then, cancel if needed.
-    if (!confirm(`Are you sure you would like to delete the record with ID: ${reservationId}?`))
+    if (!confirm(`Are you sure you would like to delete the record with ID: ${reservationLocationId}?`))
         return;
 
     // Put our data we want to send in a javascript object
     let data = {
-        reservationId: reservationId
+        id: reservationLocationId
     };
-
-
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "/delete-reservation", true);
+    xhttp.open("DELETE", "/delete-reservationLocation", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -28,7 +26,7 @@ function deleteReservation(reservationId) {
         if (xhttp.readyState == 4 && xhttp.status == 204) {
 
             // Add the new data to the table.
-            deleteRow(reservationId);
+            deleteRow(reservationLocationId);
         }
         else if (xhttp.readyState == 4 && xhttp.status != 204) {
             console.log("There was an error with the input.")
@@ -38,24 +36,24 @@ function deleteReservation(reservationId) {
     xhttp.send(JSON.stringify(data));
 }
 
-function deleteRow(reservationId) {
+function deleteRow(reservationLocationId) {
 
     let table = document.getElementById("customerTable");
     for (let i = 0, row; row = table.rows[i]; i++) {
         //iterate through rows
         //rows would be accessed using the "row" variable assigned in the for loop
-        if (table.rows[i].getAttribute("data-value") == reservationId) {
+        if (table.rows[i].getAttribute("data-value") == reservationLocationId) {
             table.deleteRow(i);
-            deleteDropDownMenu(reservationId);
+            deleteDropDownMenu(reservationLocationId);
             break;
         }
     }
 }
 
-// function deleteDropDownMenu(reservationId) {
-//     let selectMenu = document.getElementById("input-reservationId-update");
+// function deleteDropDownMenu(customerReservationId) {
+//     let selectMenu = document.getElementById("input-reservationLocationId-update");
 //     for (let i = 0; i < selectMenu.length; i++) {
-//         if (Number(selectMenu.options[i].value) === Number(reservationId)) {
+//         if (Number(selectMenu.options[i].value) === Number(reservationLocationId)) {
 //             selectMenu[i].remove();
 //             break;
 //         }
