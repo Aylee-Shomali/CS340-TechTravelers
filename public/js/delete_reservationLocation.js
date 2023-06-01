@@ -44,7 +44,7 @@ function deleteRow(reservationLocationId) {
         //rows would be accessed using the "row" variable assigned in the for loop
         if (table.rows[i].getAttribute("data-value") == reservationLocationId) {
             table.deleteRow(i);
-            deleteDropDownMenu(reservationLocationId);
+            // deleteDropDownMenu(reservationLocationId);
             break;
         }
     }
