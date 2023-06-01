@@ -151,31 +151,37 @@ app.get('/reservations', function (req, res) {
 
 //UPDATE THIS ACCORDINGLY
 app.get('/reservationLocation', function (req, res) {
-    // Declare Query 1
-    // let query1 = "SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;";
+    // Declare Query 1 location dropdown
+    let query1 = "SELECT reservationLocationId AS `Reservation Location Id`, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`, ReservationLocation.reservationId AS `Reservation Id` FROM ReservationLocation INNER JOIN Locations ON ReservationLocation.locationId = Locations.locationId INNER JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId ORDER BY reservationLocationId ASC; ";
 
-    // Declare Query 2
-    // let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+    // loction dropdown
+    // let query1 = "SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`FROM Locations ORDER BY locationId ASC;";
+
+    // Declare Query 2 
+    let query2 = "SELECT reservationId AS `Reservation Id`, CONCAT(Agents.firstName, ' ', Agents.lastName) AS`Agent`, startDate AS`Start Date`,endDate AS`End Date` FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+
+    //reservation dropdown
+    // let query2 = "SELECT reservationId FROM Reservations ORDER BY reservationId ASC; ";
 
     // Declare Query 3
-    // let query3 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
+    let query3 = "SELECT ReservationLocationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`, Reservations.reservationId AS reservationId FROM ReservationLocation LEFT JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId LEFT JOIN Locations ON Locations.locationId = ReservationLocation.locationId WHERE reservationLocationId = : id ORDER BY reservationLocationId ASC; ";
 
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
         // Save the records
-        let reservationLocations = rows;
+        let locations = rows;
 
         // Run the second query.
         db.pool.query(query2, function (error, rows, fields) {
 
             // Save the records
-            let locations = rows;
+            let reservations = rows;
 
             // Run the third query.
             db.pool.query(query3, function (error, rows, fields) {
 
                 // Save the records
-                let reservations = rows;
+                let reservationLocations = rows;
 
                 return res.render('reservationLocation', { reservationLocationData: reservationLocations, locationIdData: locations, reservationIdData: reservations });
             })
@@ -425,6 +431,45 @@ app.post('/add-reservation', function (req, res) {
     })
 });
 
+app.post('/add-reservationLocation', function (req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO ReservationLocation (locationId, reservationId) VALUES (${data.locationId}, ${data.reservationId});`;
+
+    db.pool.query(query1, function (error, rows, fields) {
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else {
+            // If there was no error, get all records.
+            query2 = `SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;`;
+
+            db.pool.query(query2, function (error, rows, fields) {
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+
 //////////////////////
 // DELETE ROUTES
 //////////////////////
@@ -475,6 +520,26 @@ app.delete('/delete-reservation/', function (req, res, next) {
 
     // Run the 1st query
     db.pool.query(query, [reservationId], function (error, rows, fields) {
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else {
+            res.sendStatus(204);
+        }
+    })
+});
+
+app.delete('/delete-reservationLocation/', function (req, res, next) {
+    let data = req.body;
+    let reservationLocationId = parseInt(data.reservationLocationId);
+    let query = `DELETE FROM ReservationLocation WHERE reservationLocationId = ?`;
+
+    // Run the 1st query
+    db.pool.query(query, [reservationLocationId], function (error, rows, fields) {
         if (error) {
 
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
