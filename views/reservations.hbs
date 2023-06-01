@@ -49,8 +49,9 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
     <form id="add-reservation-form">
         <legend><strong>Add Reservation</strong></legend>
         <fieldset class="fields">
-            <label for="reservationId" class="required"> Reservation Id </label>
-                <input type="number" name="reservationId" id="input-reservationId" maxlength="50" min="0" />
+            {{!-- style departure from html page since reservationId is auto-incremented, now hiding this label and field from view --}}
+            {{!-- <label for="reservationId" class="required"> Reservation Id </label>
+                <input type="number" name="reservationId" id="input-reservationId" maxlength="50" min="0" /> --}}
             <label for="agent" class="required"> Agent </label>
                 <select name="agent" id="input-agentId">
                     <option value="0">Select an Agent</option>
@@ -70,39 +71,7 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
     </form>
 </div><!-- insert -->
 
-<!-- <p>&nbsp;</p> -->
-{{!-- <div id="update">
-    <form id="update-customer-form">
-        <legend><strong>Update Customer</strong></legend>
-        <fieldset class="fields">
-            <label>For Customer ID:<strong> 1</strong><br /></label>
-            <br>
-            <label> Customer ID </label>
-            <select name="customerId" id="input-customerId-update">
-                <option value="0">Select a Customer ID</option>
-                {{#each customerData}}
-                <option value="{{this.customerId}}">{{this.customerId}}</option>
-                {{/each}}
-            </select>
-            <br>
-            <label for="firstName" class="required"> First Name </label>
-            <input type="text" name="firstName" id="input-firstName-update" value="" maxlength="50">
-            <label for="lastName" class="required"> Last Name </label>
-            <input type="text" name="lastName" value="" maxlength="80" id="input-lastName-update">
-            <label for="email" class="required"> Email </label>
-            <input type="text" name="email" value="" maxlength="100" id="input-email-update">
-            <br>
-            <label for="phoneNumber" class="required"> Phone Number </label>
-            <input type="text" name="phoneNumber" value="" id="input-phoneNumber-update" maxlength="15">
-            <label for="address" class="required"> Address </label>
-            <input type="text" name="address" value="" id="input-address-update" maxlength="700">
-
-            <caption>* these fields are required</caption>
-        </fieldset>
-        <input class="btn" type="submit" id="updateCustomer" value="Update Customer"> --}}
-        {{!-- cancel button: enhancement? --}}
-    {{!-- </form>
-</div><!-- update --> --}}
+<!-- Update --> {{!-- enhancement? --}}
 
 <script src="./js/add_reservation.js"></script>
 {{!-- <script src="./js/update_reservation.js"></script>--}}
