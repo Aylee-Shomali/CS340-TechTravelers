@@ -214,6 +214,7 @@ form,
 button,
 input,
 select,
+option,
 textarea {
     font-family: 'Montserrat', sans-serif;
     padding: 2%;
@@ -222,7 +223,6 @@ textarea {
     color: rgb(69, 158, 144, .90);
     font-weight: bolder;
     border-radius: 8px;
-    /* font-size: 110%; */
 }
  
 
