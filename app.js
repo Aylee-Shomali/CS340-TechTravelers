@@ -149,27 +149,24 @@ app.get('/reservations', function (req, res) {
     })
 });
 
-//UPDATE THIS ACCORDINGLY
+
 app.get('/reservationLocation', function (req, res) {
     // Declare Query 1 location dropdown
-    let query1 = "SELECT reservationLocationId AS `Reservation Location Id`, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`, ReservationLocation.reservationId AS `Reservation Id` FROM ReservationLocation INNER JOIN Locations ON ReservationLocation.locationId = Locations.locationId INNER JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId ORDER BY reservationLocationId ASC; ";
-
-    // loction dropdown
-    // let query1 = "SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`FROM Locations ORDER BY locationId ASC;";
+    let query1 = "SELECT reservationLocationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`, ReservationLocation.reservationId FROM ReservationLocation INNER JOIN Locations ON ReservationLocation.locationId = Locations.locationId INNER JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId ORDER BY reservationLocationId ASC; ";
 
     // Declare Query 2 
-    let query2 = "SELECT reservationId AS `Reservation Id`, CONCAT(Agents.firstName, ' ', Agents.lastName) AS`Agent`, startDate AS`Start Date`,endDate AS`End Date` FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
-    //reservation dropdown
-    // let query2 = "SELECT reservationId FROM Reservations ORDER BY reservationId ASC; ";
+    // Declare Query 3 reservation dropdown
+    let query3 = "SELECT reservationId FROM Reservations ORDER BY reservationId ASC; ";
 
-    // Declare Query 3
-    let query3 = "SELECT ReservationLocationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`, Reservations.reservationId AS reservationId FROM ReservationLocation LEFT JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId LEFT JOIN Locations ON Locations.locationId = ReservationLocation.locationId WHERE reservationLocationId = : id ORDER BY reservationLocationId ASC; ";
+    // Declare Query 4 loction dropdown
+    let query4 = "SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`FROM Locations ORDER BY locationId ASC;";
 
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
         // Save the records
-        let locations = rows;
+        let reservationLocations = rows;
 
         // Run the second query.
         db.pool.query(query2, function (error, rows, fields) {
@@ -181,9 +178,22 @@ app.get('/reservationLocation', function (req, res) {
             db.pool.query(query3, function (error, rows, fields) {
 
                 // Save the records
-                let reservationLocations = rows;
+                let reservationDropdown = rows;
 
-                return res.render('reservationLocation', { reservationLocationData: reservationLocations, locationIdData: locations, reservationIdData: reservations });
+                // Run the fourth query.
+                db.pool.query(query4, function (error, rows, fields) {
+
+                    // Save the records
+                    let locationsDropdown = rows;
+
+                    return res.render('reservationLocation', { 
+                        reservationLocationData: reservationLocations, 
+                        reservationData: reservations,
+                        reservationDropdownData: reservationDropdown,
+                        locationDropdownData: locationsDropdown
+                     });
+                })
+
             })
         })
     })
@@ -449,7 +459,7 @@ app.post('/add-reservationLocation', function (req, res) {
         }
         else {
             // If there was no error, get all records.
-            query2 = `SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;`;
+            query2 = "SELECT reservationLocationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`, ReservationLocation.reservationId FROM ReservationLocation INNER JOIN Locations ON ReservationLocation.locationId = Locations.locationId INNER JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId ORDER BY reservationLocationId ASC;";
 
             db.pool.query(query2, function (error, rows, fields) {
 

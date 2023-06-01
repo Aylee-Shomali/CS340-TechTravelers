@@ -7,7 +7,7 @@
 
 
 // Get the objects we need to modify
-let addreservationLocationForm = document.getElementById('add-reservationLocation-form');
+let addReservationLocationForm = document.getElementById('add-reservationLocation-form');
 
 // Modify the objects we need
 addReservationLocationForm.addEventListener("submit", function (e) {

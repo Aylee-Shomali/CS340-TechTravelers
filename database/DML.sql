@@ -147,10 +147,10 @@ DELETE FROM Customer WHERE customerId = :id
 -- -----------------------------------------------------
 -- Select query for Reservations page Read operation.
 -- -----------------------------------------------------
-SELECT reservationId AS `Reservation Id`, 
-       CONCAT(Agents.firstName, ' ', Agents.lastName) AS `Agent`,
-       startDate AS `Start Date`, 
-       endDate AS `End Date`
+SELECT reservationId,
+    CONCAT(Agents.firstName,' ', Agents.lastName) AS agent,
+    date_format(startDate, '%Y-%m-%d') AS startDate,
+    date_format(endDate, '%Y-%m-%d') AS endDate
 FROM Reservations
 JOIN Agents ON Reservations.agentId = Agents.agentId
 ORDER BY reservationId ASC;
@@ -164,7 +164,9 @@ VALUES (:agentId, :startDate, :endDate);
 -- -----------------------------------------------------
 -- Select query for ReservationLocations page Read operation.
 -- -----------------------------------------------------
-SELECT reservationLocationId AS `Reservation Location Id`, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`, ReservationLocation.reservationId AS `Reservation Id`
+SELECT reservationLocationId,
+    CONCAT(cityName, ', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''),
+        countryName) AS `location`, ReservationLocation.reservationId
 FROM ReservationLocation
 INNER JOIN Locations ON ReservationLocation.locationId = Locations.locationId
 INNER JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId
@@ -173,10 +175,8 @@ ORDER BY reservationLocationId ASC;
 -- -----------------------------------------------------
 -- Select query for Reservation page Read operation (Also used in ReservationLocations page for reference).
 -- -----------------------------------------------------
-SELECT reservationId AS `Reservation Id`, 
-       CONCAT(Agents.firstName, ' ', Agents.lastName) AS `Agent`, 
-       startDate AS `Start Date`, 
-       endDate AS `End Date`
+SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent`,
+    startDate, endDate
 FROM Reservations
 JOIN Agents ON Reservations.agentId = Agents.agentId
 ORDER BY reservationId ASC;
@@ -184,7 +184,7 @@ ORDER BY reservationId ASC;
 -- -----------------------------------------------------
 -- Select Query for ReservationLocation page to show Location dropdown options.
 -- -----------------------------------------------------
-SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`
+SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`
 FROM Locations 
 ORDER BY locationId ASC;
 

@@ -34,9 +34,9 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             {{#each reservationLocationData}}
             <tr data-value={{this.reservationLocationId}}>
                 <td>{{this.reservationLocationId}}</td>
-                <td>{{this.locationId}}</td>
+                <td>{{this.location}}</td> {{!--location value--}}
                 <td>{{this.reservationId}}</td>
-                <td><button onclick="deletereservationLocation({{this.reservationLocationId}})">Delete</button></td>
+                <td><button onclick="deleteReservationLocation({{this.reservationLocationId}})">Delete</button></td>
             </tr>
             {{/each}}
         </tbody>
@@ -80,14 +80,14 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             <label for="location" class="required"> Location </label>
             <select name="location" required id="input-locationId">
                 <option value="0">Select a Location</option>
-                {{#each locationData}}
-                <option value="{{this.locatioId}}">{{this.location}}</option>
+                {{#each locationDropdownData}}
+                <option value="{{this.locationId}}">{{this.location}}</option>
                 {{/each}}
             </select>
             <label for="reservationId" class="required"> Reservation ID </label>
             <select name="reservationId" required id="input-reservationId">
                 <option value="0">Select a Reservation ID</option>
-                {{#each reservationData}}
+                {{#each reservationDropdownData}}
                 <option value="{{this.reservationId}}">{{this.reservationId}}</option>
                 {{/each}}
             </select>
