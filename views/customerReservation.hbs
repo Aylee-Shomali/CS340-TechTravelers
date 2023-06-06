@@ -14,19 +14,14 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 <div id="browse">
  <table id="customerTable" border="1" cellpadding="5">
     <caption>Current CustomerReservation Listing</caption>
-    {{!-- Header section --}}
-    <thead></thead>
-
     {{!-- Body section --}}
     <tbody>
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr class="customerCol">
-            {{#each customerReservationData.[0]}}
-            <th class="customerH">
-                {{@key}}
-            </th>
-            {{/each}}
+            <th class="customerH">Customer Reservation ID</th>
+            <th class="customerH">Customer</th>
+            <th class="customerH">Reservation ID</th>
             <th>Delete</th>
         </tr>
 
@@ -47,16 +42,14 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
   <h3>Reservations</h3>
   <table id= "customerTable" border="1" cellpadding="5">
       <caption>Reservations Listing (For Reference)</caption>
-      <thead></thead>
       <tbody>
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr class="customerCol">
-            {{#each reservationData.[0]}}
-            <th class="customerH">
-                {{@key}}
-            </th>
-            {{/each}}
+            <th class="customerH">Reservation ID</th>
+            <th class="customerH">Agent</th>
+            <th class="customerH">Start Date (YYYY-MM-DD)</th>
+            <th class="customerH">End Date (YYYY-MM-DD)</th>
         </tr>
 
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
@@ -104,7 +97,7 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
         <fieldset class="fields">
           <label class="required">For Customer Reservation ID:</label>
           <select name="id" required id="input-customerReservationId-update">
-                <option value="0">Select a CustomerReservation Id</option>
+                <option value="0">Select a CustomerReservation ID</option>
                 {{#each customerReservationData}}
                 <option value="{{this.customerReservationId}}">{{this.customerReservationId}}</option>
                 {{/each}}

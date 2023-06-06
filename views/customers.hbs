@@ -14,19 +14,17 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 <div id="browse">
     <table id="customerTable" border="1" cellpadding="5">
         <caption>Current Customers Listing</caption>
-        {{!-- Header section --}}
-        <thead></thead>
-
         {{!-- Body section --}}
         <tbody>
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr class="customerCol">
-                {{#each customerData.[0]}}
-                <th class="customerH">
-                    {{@key}}
-                </th>
-                {{/each}}
+                <th class="customerH">Customer ID</th>
+                <th class="customerH">First Name</th>
+                <th class="customerH">Last Name</th>
+                <th class="customerH">Email</th>
+                <th class="customerH">Phone Number</th>
+                <th class="customerH">Address</th>
                 <th>Delete</th>
             </tr>
 
