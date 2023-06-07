@@ -45,11 +45,8 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
     <form id="add-reservation-form">
         <legend><strong>Add Reservation</strong></legend>
         <fieldset class="fields">
-            {{!-- style departure from html page since reservationId is auto-incremented, now hiding this label and field from view --}}
-            {{!-- <label for="reservationId" class="required"> Reservation Id </label>
-                <input type="number" name="reservationId" id="input-reservationId" maxlength="50" min="0" /> --}}
             <label for="agent" class="required"> Agent </label>
-                <select name="agent" id="input-agentId">
+                <select name="agent" required id="input-agentId">
                     <option value="0">Select an Agent</option>
                     {{#each agentData}}
                     <option value="{{this.agentId}}">{{this.agent}}</option>
@@ -63,11 +60,8 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             <caption>* these fields are required</caption>
         </fieldset>
         <input class="btn" type="submit" id="addReservation" value="Add Reservation">
-        {{!-- cancel button: enhancement? --}}
     </form>
 </div><!-- insert -->
-
-<!-- Update --> {{!-- enhancement? --}}
 
 <script src="./js/add_reservation.js"></script>
 {{!-- <script src="./js/update_reservation.js"></script>--}}

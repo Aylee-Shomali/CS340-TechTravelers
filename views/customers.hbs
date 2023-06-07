@@ -50,21 +50,26 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
         <legend><strong>Add Customer</strong></legend>
         <fieldset class="fields">
             <label for="firstName" class="required"> First Name </label>
-                <input type="text" name="firstName" id="input-firstName" maxlength="50" />
+                <input type="text" name="firstName" required id="input-firstName" maxlength="50" />
             <label for="lastName" class="required"> Last Name </label>
-                <input type="text" name="lastName" id="input-lastName" maxlength="80" />
+                <input type="text" name="lastName" required id="input-lastName" maxlength="80" />
             <label for="email" class="required"> Email </label>
-                <input type="email" name="email" id="input-email" maxlength="100" />
+                <input type="email" name="email" required id="input-email" maxlength="100" />
             <label for="phoneNumber" class="required"> Phone Number </label>
-                <input type="text" name="phoneNumber" class="required" id="input-phoneNumber" maxlength="15" />
+            <!-- Citation for the pattern matching validation attribute.
+            Date: 6/6/2023
+            Type: one line of code
+            Copied for our form validation of phone numbers.
+            Source URL: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/tel
+             -->
+            <input type="text" name="phoneNumber" required id="input-phoneNumber" maxlength="15" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: xxx-xxx-xxxx"/>
             </br>
             <label for="address" class="required" > Address </label> 
-                <input type="text" name="address" id="input-address" maxlength="700">
+                <input type="text" name="address" required id="input-address" maxlength="700">
             
             <caption>* these fields are required</caption>
         </fieldset>
         <input class="btn" type="submit" id="addCustomer" value="Add Customer">
-        {{!-- cancel button: enhancement? --}}
     </form>
 </div><!-- insert -->
 
@@ -76,30 +81,35 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             {{!-- <label>For Customer ID:<strong> 1</strong><br /></label> --}}
             <br>
             <label for="customerId" class="required"> Customer ID </label>
-                <select name="customerId" id="input-customerId-update">
+                <select name="customerId" id="input-customerId-update" required>
                     <option value="0">Select a Customer ID</option>
                     {{#each customerData}}
                     <option value="{{this.customerId}}">{{this.customerId}}</option>
                     {{/each}}
                 </select>
             <br>
-            <label for="firstName" class="required" > First Name </label> 
-                <input type="text" name="firstName" id="input-firstName-update" value="" maxlength="50">
+            <label for="firstName" class="required"> First Name </label> 
+                <input type="text" name="firstName" required id="input-firstName-update" value="" maxlength="50">
             <label for="lastName" class="required"> Last Name </label> 
-                <input type="text" name="lastName"value="" maxlength="80" id="input-lastName-update">
+                <input type="text" name="lastName" required  value="" maxlength="80" id="input-lastName-update">
             <label for="email" class="required" > Email </label> 
-                <input type="text" name="email"
+                <input type="text" name="email" required 
                     value="" maxlength="100" id="input-email-update">
             <br>
             <label for="phoneNumber" class="required" > Phone Number </label> 
-                <input type="text" name="phoneNumber" value="" id="input-phoneNumber-update" maxlength="15">
+            <!-- Citation for the pattern matching validation attribute.
+            Date: 6/6/2023
+            Type: One line of code
+            Copied for our form validation of phone numbers.
+            Source URL: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/tel
+             -->
+            <input type="text" name="phoneNumber" required id="input-phoneNumber" maxlength="15" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: xxx-xxx-xxxx"/>
             <label for="address" class="required" > Address </label> 
-                <input type="text" name="address" value="" id="input-address-update" maxlength="700">
+                <input type="text" name="address" required value="" id="input-address-update" maxlength="700">
 
             <caption>* these fields are required</caption>
         </fieldset>
         <input class="btn" type="submit" id="updateCustomer" value="Update Customer">
-        {{!-- cancel button: enhancement? --}}
     </form>
 </div><!-- update -->
 

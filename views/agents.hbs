@@ -54,7 +54,13 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
               <label for="email" class="required"> Email </label>
               <input type="email" name="email" required id="input-email" maxlength="100"/>
               <label for="phoneNumber" class="required"> Phone Number </label>
-              <input type="text" name="phoneNumber" required id="input-phoneNumber" maxlength="15"/>
+              <!-- Citation for the pattern matching validation attribute.
+              Date: 6/6/2023
+              Type: one line of code
+              Copied for our form validation of phone numbers.
+              Source URL: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/tel
+               -->
+              <input type="text" name="phoneNumber" required id="input-phoneNumber" maxlength="15" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: xxx-xxx-xxxx"/>
               </br>
               <label for="locationId"> Location </label>
               <select name="locationId" id="input-locationId">
