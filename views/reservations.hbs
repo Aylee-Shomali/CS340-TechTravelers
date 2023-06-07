@@ -19,11 +19,17 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr class="customerCol">
-                {{#each reservationData.[0]}}
+                {{!-- {{#each reservationData.[0]}}
                 <th class="customerH">
                     {{@key}}
                 </th>
-                {{/each}}
+                {{/each}} --}}
+                {{!-- Enhancement: swapping handlebar th with listing col names instead --}}
+                <th class="customerH">Reservation ID</th>
+                <th class="customerH">Agent</th>
+                <th class="customerH">Start Date (YYYY-MM-DD)</th>
+                <th class="customerH">End Date (YYYY-MM-DD)</th>
+
                 <th>Delete</th>
             </tr>
 
