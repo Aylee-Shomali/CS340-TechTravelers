@@ -88,4 +88,40 @@ function updateRow(data, id){
     }
 }
 
+// Additional code for autofilling form values based on selected record in the dropdown. 
+// (Original work, but inspired a bit by the updateRow function above)
+let recordIdDropdown = document.getElementById('input-customerReservationId-update');
+
+recordIdDropdown.addEventListener("change", function (e) {
+    // Get the current record id value from the dropdown.
+    let recordId = e.target.value;
+
+    // Get the values in the table related 
+    let table = document.getElementById("customerTable");
+
+    // Get select elements in the form.
+    let selectCustomer = document.getElementById("input-customerId-update");
+    let selectReservationId = document.getElementById("input-reservationId-update");
+
+    for (let i = 0, row; row = table.rows[i]; i++) {
+       // Iterate through rows.
+       // Rows would be accessed using the "row" variable assigned in the for loop.
+       if (table.rows[i].getAttribute("data-value") == recordId) {
+
+            // Get the location of the row where we found the matching ID.
+            let dataRowIndex = table.getElementsByTagName("tr")[i];
+
+            // Get td of Customer and reservationId values.
+            let tdCustomer = dataRowIndex.getElementsByTagName("td")[1];
+            let tdReservationId = dataRowIndex.getElementsByTagName("td")[2];
+
+            // Get the customer dropdown option that corresponds to the customer name.
+            let customerValue = document.getElementById(`option-${tdCustomer.innerHTML}`);
+
+            // Select the options in the form according to the values in the table.
+            selectCustomer.value = customerValue.value; 
+            selectReservationId.value = tdReservationId.innerHTML; 
+       }
+    }
+});
 

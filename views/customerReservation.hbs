@@ -106,7 +106,7 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
           <select name="customer" required id="input-customerId-update">
                 <option value="0">Select a Customer</option>
                 {{#each customerData}}
-                <option value="{{this.customerId}}">{{this.customer}}</option>
+                <option id="option-{{this.customer}}" value="{{this.customerId}}">{{this.customer}}</option>
                 {{/each}}
               </select> 
               <label for="reservationId" class="required"> Reservation ID </label>

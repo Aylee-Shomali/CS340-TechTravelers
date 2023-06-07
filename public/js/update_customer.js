@@ -109,5 +109,47 @@ function updateRow(data, customerId) {
 
         }
     }
-
 }
+
+// Additional code for autofilling form values based on selected record in the dropdown. 
+// (Original work, but inspired a bit by the updateRow function above)
+let recordIdDropdown = document.getElementById('input-customerId-update');
+
+recordIdDropdown.addEventListener("change", function (e) {
+    // Get the current record id value from the dropdown.
+    let recordId = e.target.value;
+
+    // Get the values in the table related 
+    let table = document.getElementById("customerTable");
+
+    // Get elements in the form.
+    let inputFirstName = document.getElementById("input-firstName-update");
+    let inputLastName = document.getElementById("input-lastName-update");
+    let inputEmail = document.getElementById("input-email-update");
+    let inputPhoneNumber = document.getElementById("input-phoneNumber-update");
+    let inputAddress = document.getElementById("input-address-update");
+
+    for (let i = 0, row; row = table.rows[i]; i++) {
+       // Iterate through rows.
+       // Rows would be accessed using the "row" variable assigned in the for loop.
+       if (table.rows[i].getAttribute("data-value") == recordId) {
+
+            // Get the location of the row where we found the matching ID.
+            let dataRowIndex = table.getElementsByTagName("tr")[i];
+
+            // Get td of all attributes for the record.
+            let tdFirstName = dataRowIndex.getElementsByTagName("td")[1];
+            let tdLastName = dataRowIndex.getElementsByTagName("td")[2];
+            let tdEmail = dataRowIndex.getElementsByTagName("td")[3];
+            let tdPhoneNumber = dataRowIndex.getElementsByTagName("td")[4];
+            let tdAddress = dataRowIndex.getElementsByTagName("td")[5];
+
+            // Fill fields in the form according to the values in the table.
+            inputFirstName.value = tdFirstName.innerHTML;
+            inputLastName.value = tdLastName.innerHTML;
+            inputEmail.value = tdEmail.innerHTML;
+            inputPhoneNumber.value = tdPhoneNumber.innerHTML;
+            inputAddress.value = tdAddress.innerHTML;
+       }
+    }
+});
