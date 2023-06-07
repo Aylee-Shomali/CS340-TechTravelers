@@ -19,10 +19,11 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr class="customerCol">
-                <th class="customerH">Reservation ID</th>
-                <th class="customerH">Agent</th>
-                <th class="customerH">Start Date (YYYY-MM-DD)</th>
-                <th class="customerH">End Date (YYYY-MM-DD)</th>
+                {{#each reservationData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
                 <th>Delete</th>
             </tr>
 
@@ -46,7 +47,7 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
         <legend><strong>Add Reservation</strong></legend>
         <fieldset class="fields">
             <label for="agent" class="required"> Agent </label>
-                <select name="agent" required id="input-agentId">
+                <select name="agent" id="input-agentId" required>
                     <option value="0">Select an Agent</option>
                     {{#each agentData}}
                     <option value="{{this.agentId}}">{{this.agent}}</option>

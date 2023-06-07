@@ -19,9 +19,11 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr class="customerCol">
-                <th class="customerH">Reservation Location ID</th>
-                <th class="customerH">Location</th>
-                <th class="customerH">Reservation ID</th>
+                {{#each reservationLocationData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
                 <th>Delete</th>
             </tr>
 
@@ -46,10 +48,11 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             {{!-- For just the first row, we print each key of the row object as a header cell so we
             know what each column means when the page renders --}}
             <tr class="customerCol">
-                <th class="customerH">Reservation ID</th>
-                <th class="customerH">Agent</th>
-                <th class="customerH">Start Date (YYYY-MM-DD)</th>
-                <th class="customerH">End Date (YYYY-MM-DD)</th>
+                {{#each reservationData.[0]}}
+                <th class="customerH">
+                    {{@key}}
+                </th>
+                {{/each}}
             </tr>
 
             {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
@@ -71,19 +74,19 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
         <legend><strong>Add Reservation Location</strong></legend>
         <fieldset class="fields">
             <label for="location" class="required"> Location </label>
-            <select name="location" required id="input-locationId">
-                <option value="0">Select a Location</option>
-                {{#each locationDropdownData}}
-                <option value="{{this.locationId}}">{{this.location}}</option>
-                {{/each}}
-            </select>
+                <select name="location" id="input-locationId" required>
+                    <option value="0">Select a Location</option>
+                    {{#each locationDropdownData}}
+                    <option value="{{this.locationId}}">{{this.location}}</option>
+                    {{/each}}
+                </select>
             <label for="reservationId" class="required"> Reservation ID </label>
-            <select name="reservationId" required id="input-reservationId">
-                <option value="0">Select a Reservation ID</option>
-                {{#each reservationDropdownData}}
-                <option value="{{this.reservationId}}">{{this.reservationId}}</option>
-                {{/each}}
-            </select>
+                <select name="reservationId" id="input-reservationId" required>
+                    <option value="0">Select a Reservation ID</option>
+                    {{#each reservationDropdownData}}
+                    <option value="{{this.reservationId}}">{{this.reservationId}}</option>
+                    {{/each}}
+                </select>
             <caption>* these fields are required</caption>
         </fieldset>
         <input class="btn" type="submit" id="addReservationLocation" value="Add ReservationLocation">

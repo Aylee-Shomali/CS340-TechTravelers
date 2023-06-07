@@ -52,6 +52,7 @@ function deleteRow(customerId) {
     }
 }
 
+// this function removes the deleted customer from appearing in the drop down menu when updating a customer
 function deleteDropDownMenu(customerId) {
     let selectMenu = document.getElementById("input-customerId-update");
     for (let i = 0; i < selectMenu.length; i++) {

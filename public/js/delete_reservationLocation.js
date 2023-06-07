@@ -50,7 +50,9 @@ function deleteRow(reservationLocationId) {
     }
 }
 
-// function deleteDropDownMenu(customerReservationId) {
+// this function removes the deleted reservationLocationId from appearing in the drop down menu when updating a reservationLocation
+// Update functionality for reservationLocation is not currently implemented, so commented out
+// function deleteDropDownMenu(reservationLocationId) {
 //     let selectMenu = document.getElementById("input-reservationLocationId-update");
 //     for (let i = 0; i < selectMenu.length; i++) {
 //         if (Number(selectMenu.options[i].value) === Number(reservationLocationId)) {
