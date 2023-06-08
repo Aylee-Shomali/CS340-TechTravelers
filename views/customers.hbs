@@ -114,7 +114,7 @@ https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
             <label for="customerId" class="required"> Customer </label>
                 <select name="customerId" id="input-customerId-update" required>
                     <option value="0">Select a Customer</option>
-                    {{#each customerData}}
+                    {{#each customerDropdown}}
                     <option value="{{this.customerId}}">{{this.customer}}</option>
                     {{/each}}
                 </select>

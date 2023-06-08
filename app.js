@@ -115,13 +115,23 @@ app.get('/customers', function (req, res) {
     // Declare Query 1
     let query1 = "SELECT * from Customers ORDER BY customerId ASC;";
 
+    // Declare Query 2 so that we can use it in the dropdown menu in Customers form when updating a customer instead of customerId
+    let query2 = "SELECT customerID, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
+
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
         // Save the records
         let customers = rows;
 
-        return res.render('customers', { customerData: customers });
+        // Run the second query.
+        db.pool.query(query2, function (error, rows, fields) {
+
+        // Save the records which will be used in the dropdown menu see line 117 in customers.hbs
+        let customerDropdown = rows;
+
+        return res.render('customers', { customerData: customers, customerDropdown: customerDropdown });
         })
+    })
 });
 
 app.get('/reservations', function (req, res) {
