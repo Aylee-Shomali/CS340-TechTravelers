@@ -4,6 +4,19 @@ Type: Full program
 Date: 05/25/2023
 Copied and then modified to fit our database structure:
 Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+
+Citation for the pattern matching validation attribute.
+Date: 6/6/2023
+Type: adapted for phone numbers add and updates
+Copied for our form validation of phone numbers.
+Source URL: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/tel
+
+Citation for the pattern matching validation attribute.
+Date: 6/7/2023
+Type: adapted for email add and updates
+Copied for our form validation of emails.
+Source URL:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
 -->
 
 <!-- agents.hbs -->
@@ -52,14 +65,8 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
               <label for="lastName" class="required"> Last Name </label>
               <input type="text" name="lastName" required id="input-lastName" maxlength="80"/>
               <label for="email" class="required"> Email </label>
-              <input type="email" name="email" required id="input-email" maxlength="100"/>
+              <input type="email" name="email" id="input-email" maxlength="100" pattern="[^ @]+@[^ @]+.[a-z]+" placeholder="name@email.com" required/>
               <label for="phoneNumber" class="required"> Phone Number </label>
-              <!-- Citation for the pattern matching validation attribute.
-              Date: 6/6/2023
-              Type: one line of code
-              Copied for our form validation of phone numbers.
-              Source URL: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/tel
-               -->
               <input type="text" name="phoneNumber" required id="input-phoneNumber" maxlength="15" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: xxx-xxx-xxxx"/>
               </br>
               <label for="locationId"> Location </label>
