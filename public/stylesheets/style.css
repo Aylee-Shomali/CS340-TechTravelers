@@ -90,10 +90,14 @@ a.topics:hover {
     color: rgba(29, 91, 119, .85);
     background-color: rgba(196, 225, 242, .85);
     margin-right: 10px;
-    padding: 10px 16px 6px;
+    /* padding: 10px 16px 6px; */
     border-radius: 8px;
     font-weight: bolder;
-    border-style: outset;
+    text-decoration: none;
+    display:inline-block;
+    border-style: none;
+    padding: 8px 6px 8px 6px;
+    
 }
 
 a.topics:link{
