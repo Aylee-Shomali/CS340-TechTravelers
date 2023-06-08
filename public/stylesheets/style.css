@@ -96,6 +96,10 @@ a.topics:hover {
     border-style: outset;
 }
 
+a.topics:link{
+    color: rgb(118, 212, 238);
+}
+
 h2 {
     color: var(--dark-purple);
     font-size: 28px;
