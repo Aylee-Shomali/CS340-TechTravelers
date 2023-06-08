@@ -1,4 +1,4 @@
--- Group 6 TechTravelers Project Step 5 Draft
+-- Group 6 TechTravelers Project Step 6 Final
 -- Group Members: Sajidah Wahdy and Aylee Shomali
 -- DML file for TechTravels Database HTML pages.
 
@@ -106,13 +106,16 @@ DELETE FROM CustomerReservation WHERE customerReservationId = :id
 -- -----------------------------------------------------
 -- Select Query for Customers page for Read operation.
 -- -----------------------------------------------------
-SELECT customerId AS `Customer Id`, 
-       firstName AS `First Name`, 
-       lastName AS `Last Name`, 
-       email AS `Email`, 
-       phoneNumber AS `Phone Number`, 
-       address AS `Address`
+SELECT customerId, firstName, lastName, email, phoneNumber, address
 FROM Customers
+ORDER BY customerId ASC;
+
+-- -----------------------------------------------------
+-- Select Query for Customers page for update dropdown options.
+-- -----------------------------------------------------
+SELECT customerId, 
+CONCAT(firstName, ' ', lastName) AS customer 
+FROM Customers 
 ORDER BY customerId ASC;
 
 -- -----------------------------------------------------
