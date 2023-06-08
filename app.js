@@ -116,7 +116,7 @@ app.get('/customers', function (req, res) {
     let query1 = "SELECT * from Customers ORDER BY customerId ASC;";
 
     // Declare Query 2 so that we can use it in the dropdown menu in Customers form when updating a customer instead of customerId
-    let query2 = "SELECT customerID, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
+    let query2 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
 
     // Run the 1st query
     db.pool.query(query1, function (error, rows, fields) {
