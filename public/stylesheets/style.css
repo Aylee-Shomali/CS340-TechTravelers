@@ -74,6 +74,28 @@ nav a:hover {
     border-style: inset
 }
 
+/* 2ndry nav topics bar links for CRUD operations */
+a.topics {
+    padding: 8px 6px 8px 6px;
+    background-color: rgba(29, 91, 119, .85);
+    margin: 7px 5px 7px 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 8px;
+    border-style: none;
+    border: 5px darkgray;
+}
+
+a.topics:hover {
+    color: rgba(29, 91, 119, .85);
+    background-color: rgba(196, 225, 242, .85);
+    margin-right: 10px;
+    padding: 10px 16px 6px;
+    border-radius: 8px;
+    font-weight: bolder;
+    border-style: outset;
+}
+
 h2 {
     color: var(--dark-purple);
     font-size: 28px;
@@ -240,6 +262,15 @@ button {
     color: rgb(80, 184, 168);
     font-size: medium;
     /* color: rgb(69, 158, 144, .90); */
+}
+
+/* Return to Top button */
+#topBtn {
+    color: rgba(29, 91, 119, .85);
+    background-color: rgba(196, 225, 242, .85);
+    margin-bottom: 20px;
+    margin-top: 0px;
+
 }
 
 fieldset {

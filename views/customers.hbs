@@ -17,12 +17,27 @@ Type: adapted for email add and updates
 Copied for our form validation of phone numbers.
 Source URL:
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
+
+Citation for return to top button.
+Date: 6/7/2023
+Type: adapted for returning to beginning of our table view
+Copied for our form validation of phone numbers.
+Source URL:
+https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
 -->
 
 <!-- customer.hbs -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 <h2>Customers</h2>
+
+{{!-- Secondary local navigational bar for CRUD operations--}}
+<nav class="topics">
+    <a href="#browse" class="topics">View All Customers</a>
+    <a href="#insert" class="topics">Add Customers</a>
+    <a href="#update" class="topics">Update Customers</a>
+</nav>
+
 {{!-- Create a table --}}
 <div id="browse">
     <table id="customerTable" border="1" cellpadding="5">
@@ -86,6 +101,9 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
     </form>
 </div><!-- insert -->
 
+{{!-- Return to Top button --}}
+<button class="btn" onclick="topFunction()" id="topBtn" title="Go to top">Return to Top</button>
+
 <!-- <p>&nbsp;</p> -->
 <div id="update">
     <form id="update-customer-form">
@@ -122,3 +140,4 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
 <script src="./js/add_customer.js"></script>
 <script src="./js/update_customer.js"></script>
 <script src="./js/delete_customer.js"></script>
+<script src="./js/top_button.js"></script>
