@@ -111,11 +111,11 @@ https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
         <fieldset class="fields">
             {{!-- <label>For Customer ID:<strong> 1</strong><br /></label> --}}
             <br>
-            <label for="customerId" class="required"> Customer ID </label>
+            <label for="customerId" class="required"> Customer </label>
                 <select name="customerId" id="input-customerId-update" required>
-                    <option value="0">Select a Customer ID</option>
+                    <option value="0">Select a Customer</option>
                     {{#each customerData}}
-                    <option value="{{this.customerId}}">{{this.customerId}}</option>
+                    <option value="{{this.customerId}}">{{this.customer}}</option>
                     {{/each}}
                 </select>
             <br>
