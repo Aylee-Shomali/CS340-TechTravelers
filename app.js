@@ -38,7 +38,6 @@ app.get('/', function(req, res)
 //////////////////////
 // GET ROUTES: READ/SELECT
 //////////////////////
-
 app.get('/customerReservation', function(req, res)
 {
     // Declare Query 1
@@ -95,6 +94,9 @@ app.get('/agents', function(req, res)
     // Declare Query 2
     let query2 = "SELECT locationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location` FROM Locations ORDER BY locationId ASC;";
 
+    // Declare Query 3.
+    let query3 = "SELECT agentId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent` FROM Agents ORDER BY agentId ASC;";
+
     // Run the 1st query
     db.pool.query(query1, function(error, rows, fields){
         // Save the records
@@ -102,18 +104,24 @@ app.get('/agents', function(req, res)
 
         // Run the second query.
         db.pool.query(query2, function(error, rows, fields){
-
             // Save the records
             let locations = rows; 
 
-            return res.render('agents', {agentData: agents, locationData: locations});
+            // Run the third query.
+            db.pool.query(query3, function(error, rows, fields){
+
+            // Save the records
+            let agentDropdown = rows; 
+
+            return res.render('agents', {agentData: agents, locationData: locations, agentDropdown: agentDropdown});
+            })
         })
     })
 });
 
 app.get('/customers', function (req, res) {
     // Declare Query 1
-    let query1 = "SELECT * from Customers ORDER BY customerId ASC;";
+    let query1 = "SELECT * FROM Customers ORDER BY customerId ASC;";
 
     // Declare Query 2 so that we can use it in the dropdown menu in Customers form when updating a customer instead of customerId
     let query2 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
@@ -158,7 +166,6 @@ app.get('/reservations', function (req, res) {
          });
     })
 });
-
 
 app.get('/reservationLocation', function (req, res) {
     // Declare Query 1 location dropdown
@@ -367,7 +374,7 @@ app.post('/add-customer', function (req, res) {
         }
         else {
             // If there was no error, get all records.
-            query2 = "SELECT Customers.customerId, Customers.firstName, Customers.lastName, Customers.email, Customers.phoneNumber, Customers.address FROM Customers ORDER BY customerId ASC; ";
+            query2 = "SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers ORDER BY customerId ASC; ";
 
             db.pool.query(query2, function (error, rows, fields) {
 
@@ -387,17 +394,15 @@ app.post('/add-customer', function (req, res) {
     })
 });
 
-
 app.post('/add-reservation', function (req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
     // Capture NULL values + Handle additional single quotes.
-    //data.startDate gives "yyyy-mm-dd" JSON format
+    // Data.startDate gives "yyyy-mm-dd" JSON format
     let startDate = data.startDate; 
     let endDate = data.endDate;
     
-    // if (isNaN(startDate) | (isNaN(endDate)))
     if (startDate == "")
     {
         startDate = 'NULL';
@@ -533,10 +538,50 @@ app.delete('/delete-customer/', function (req, res, next) {
     })
 });
 
+app.delete('/delete-agent/', function (req, res, next) {
+    let data = req.body;
+    let agentId = parseInt(data.agentId);
+    let query = `DELETE FROM Agents WHERE agentId = ?`;
+
+    // Run the 1st query
+    db.pool.query(query, [agentId], function (error, rows, fields) {
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else {
+            res.sendStatus(204);
+        }
+    })
+});
+
+app.delete('/delete-location/', function (req, res, next) {
+    let data = req.body;
+    let locationId = parseInt(data.locationId);
+    let query = `DELETE FROM Locations WHERE locationId = ?`;
+
+    // Run the 1st query
+    db.pool.query(query, [locationId], function (error, rows, fields) {
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        }
+
+        else {
+            res.sendStatus(204);
+        }
+    })
+});
+
 app.delete('/delete-reservation/', function (req, res, next) {
     let data = req.body;
     let reservationId = parseInt(data.reservationId);
-    let query = `DELETE FROM Reservations WHERE reservationId = ?`;
+    let query = `DELETE FROM Reservations WHERE reservationId = ?;`;
 
     // Run the 1st query
     db.pool.query(query, [reservationId], function (error, rows, fields) {
@@ -618,10 +663,10 @@ app.put('/put-customer', function (req, res, next) {
 
     let customerId = parseInt(data.customerId);
 
-    queryUpdate = `UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?`;
+    queryUpdate = `UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, address = ? WHERE customerId = ?;`;
 
     // since not referring to another table, no need to refer to Table.columnName ie as below
-    querySelect = `SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers WHERE customerId = ?`;
+    querySelect = `SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers WHERE customerId = ?;`;
 
     // Run the 1st query with passing additional parameters in [] in same order as in queryUpdate but PK at the end
     db.pool.query(queryUpdate, [data.firstName, data.lastName, data.email, data.phoneNumber, data.address, data.customerId], function (error, rows, fields) {
@@ -650,10 +695,50 @@ app.put('/put-customer', function (req, res, next) {
     })
 });
 
+app.put('/put-agent', function(req,res,next){                                   
+    let data = req.body;
+  
+    let agentId = parseInt(data.agentId);
+
+    // Capture NULL values + Handle additional single quotes.
+    let locationId = data.locationId;
+    if (locationId == 0)
+        locationId = 'NULL';
+  
+    queryUpdate = `UPDATE Agents SET firstName = ?, lastName = ?, email = ?, phoneNumber = ?, locationId = ${locationId} WHERE agentId = ?;`;
+  
+    querySelect = "SELECT agentId, firstName, lastName, email, phoneNumber, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location` FROM Agents LEFT JOIN Locations ON Agents.locationId = Locations.locationId WHERE agentId = ?;";
+  
+          // Run the 1st query
+          db.pool.query(queryUpdate, [data.firstName, data.lastName, data.email, data. phoneNumber, agentId], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the record.
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(querySelect, [agentId], function(error, rows, fields) {
+          
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
+
 //////////////////////
 /*
     LISTENER
 */
 app.listen(PORT, function(){            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
-    console.log('DEV SERVER: started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+    console.log('PROD SERVER: started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
 });

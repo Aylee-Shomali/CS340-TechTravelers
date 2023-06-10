@@ -5,7 +5,7 @@
 -- ':' indicates a variable derived from user with JavaScript in a later step.
 
 -- -----------------------------------------------------
--- Select Query for Agents page for Read operation.
+-- Select Query for Agents page for Read operation and after successful insert.
 -- -----------------------------------------------------
 SELECT agentId, 
        firstName, 
@@ -26,13 +26,43 @@ FROM Locations
 ORDER BY locationId ASC;
 
 -- -----------------------------------------------------
+-- Select Query for Agents page to show Agent name dropdown options for Update operation.
+-- -----------------------------------------------------
+SELECT agentId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent` 
+FROM Agents 
+ORDER BY agentId ASC;
+
+-- -----------------------------------------------------
 -- Insert query for Agents page for Create operation using user input from HTML form.
 -- -----------------------------------------------------
 INSERT INTO Agents (firstName, lastName, email, phoneNumber, locationId) 
 VALUES (:firstName, :lastName, :email, :phoneNumber, :locationIdFromDropdown);
 
 -- -----------------------------------------------------
--- Select query for Locations page Read operation.
+-- Update query for Agents page for Update operation using user input from HTML form.
+-- -----------------------------------------------------
+UPDATE Agents 
+SET firstName = :firstName, lastName = :lastName, email = :email, phoneNumber = :phoneNumber, locationId = :locationId WHERE agentId = :agentId;
+
+-- -----------------------------------------------------
+-- Select query for Agents page for Update operation to show record data dynamically.
+-- -----------------------------------------------------
+SELECT agentId, 
+       firstName, 
+       lastName, 
+       email, 
+       phoneNumber, 
+       CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, 
+       CONCAT(stateOrProvince, ', '), ''), countryName) AS `location` FROM Agents 
+       LEFT JOIN Locations ON Agents.locationId = Locations.locationId WHERE agentId = :agentId;
+
+-- -----------------------------------------------------
+-- Delete query for Agents page Delete operation.
+-- -----------------------------------------------------
+DELETE FROM Agents WHERE agentId = :agentId
+
+-- -----------------------------------------------------
+-- Select query for Locations page Read operation and after successful insert.
 -- -----------------------------------------------------
 SELECT locationId, 
        cityName, 
@@ -48,7 +78,12 @@ INSERT INTO Locations (cityName, stateOrProvince, countryName)
 VALUES (:cityName, :stateOrProvince, :countryName);
 
 -- -----------------------------------------------------
--- Select query for CustomerReservation page Read operation.
+-- Delete query for Location page Delete operation.
+-- -----------------------------------------------------
+DELETE FROM Locations WHERE locationId = :locationId
+
+-- -----------------------------------------------------
+-- Select query for CustomerReservation page Read operation and after successful insert.
 -- -----------------------------------------------------
 SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId 
 FROM CustomerReservation 
@@ -71,20 +106,13 @@ FROM Customers
 ORDER BY customerId ASC;
 
 -- -----------------------------------------------------
--- Select Query for CustomerReservation page to show Reservation dropdown options.
--- -----------------------------------------------------
-SELECT reservationId
-FROM Reservations 
-ORDER BY reservationId ASC;
-
--- -----------------------------------------------------
 -- Insert query for CustomerReservation page Create operation using user input from HTML form.
 -- -----------------------------------------------------
 INSERT INTO CustomerReservation (customerId, reservationId)
 VALUES (:customerIdFromDropdown, :reservationIdFromDropdown);
 
 -- -----------------------------------------------------
--- Select query to show data for existing record for CustomerReservation page Update operation. (Also used to show values in DELETE confirmation message)
+-- Select query to show data for existing record for CustomerReservation page Update operation.
 -- -----------------------------------------------------
 SELECT customerReservationId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId
 FROM CustomerReservation
@@ -106,8 +134,8 @@ DELETE FROM CustomerReservation WHERE customerReservationId = :id
 -- -----------------------------------------------------
 -- Select Query for Customers page for Read operation.
 -- -----------------------------------------------------
-SELECT customerId, firstName, lastName, email, phoneNumber, address
-FROM Customers
+SELECT * 
+FROM Customers 
 ORDER BY customerId ASC;
 
 -- -----------------------------------------------------
@@ -125,13 +153,9 @@ INSERT INTO customers (firstName, lastName, email, phoneNumber, address)
 VALUES (:firstName, :lastName, :email, :phoneNumber, :address);
 
 -- -----------------------------------------------------
--- Select query to show data for existing record for Customer page Update operation. (Also used to show values in DELETE confirmation message)
+-- Select query for Customers page to show data after successful Insert operation.
 -- -----------------------------------------------------
--- SELECT customerId AS `Customer Id`, Customers.firstName AS `First Name`, Customers.lastName AS `Last Name`
--- FROM Customers
--- WHERE CustomerId = :id
--- ORDER BY customerId ASC;
-SELECT Customers.customerId, Customers.firstName, Customers.lastName, Customers.email, Customers.phoneNumber, Customers.address 
+SELECT customerId, firstName, lastName, email, phoneNumber, address 
 FROM Customers 
 ORDER BY customerId ASC; 
 
@@ -142,13 +166,18 @@ UPDATE Customer SET firstName = :firstName, lastName = :lastName, email = :email
 WHERE CustomerId = :id
 
 -- -----------------------------------------------------
+-- Select query for Customers page to show data for record in Update operation.
+-- -----------------------------------------------------
+SELECT customerId, firstName, lastName, email, phoneNumber, address FROM Customers WHERE customerId = :customerId;
+
+-- -----------------------------------------------------
 -- Delete a Customer.
 -- -----------------------------------------------------
-DELETE FROM Customer WHERE customerId = :id
+DELETE FROM Customers WHERE customerId = :id
 
 
 -- -----------------------------------------------------
--- Select query for Reservations page Read operation.
+-- Select query for Reservations page Read operation and used after a successful insert.
 -- -----------------------------------------------------
 SELECT reservationId,
     CONCAT(Agents.firstName,' ', Agents.lastName) AS agent,
@@ -159,13 +188,23 @@ JOIN Agents ON Reservations.agentId = Agents.agentId
 ORDER BY reservationId ASC;
 
 -- -----------------------------------------------------
+-- Select query for Reservations page Agents dropdown.
+-- -----------------------------------------------------
+SELECT agentId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent` FROM Agents ORDER BY agentId ASC;
+
+-- -----------------------------------------------------
 -- Insert query for Reservations page Create operation using user input from HTML form.
 -- -----------------------------------------------------
 INSERT INTO Reservations (agentId, startDate, endDate)
 VALUES (:agentId, :startDate, :endDate);
 
 -- -----------------------------------------------------
--- Select query for ReservationLocations page Read operation.
+-- Delete a Reservation.
+-- -----------------------------------------------------
+DELETE FROM Reservations WHERE reservationId = :reservationId;
+
+-- -----------------------------------------------------
+-- Select query for ReservationLocations page Read operation and after successful insert.
 -- -----------------------------------------------------
 SELECT reservationLocationId,
     CONCAT(cityName, ', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''),
@@ -178,10 +217,11 @@ ORDER BY reservationLocationId ASC;
 -- -----------------------------------------------------
 -- Select query for Reservation page Read operation (Also used in ReservationLocations page for reference).
 -- -----------------------------------------------------
-SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent`,
-    startDate, endDate
-FROM Reservations
-JOIN Agents ON Reservations.agentId = Agents.agentId
+SELECT reservationId, 
+        CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, 
+        date_format(endDate, '%Y-%m-%d') AS endDate 
+FROM Reservations 
+JOIN Agents ON Reservations.agentId = Agents.agentId 
 ORDER BY reservationId ASC;
 
 -- -----------------------------------------------------
@@ -203,22 +243,6 @@ ORDER BY reservationId ASC;
 -- -----------------------------------------------------
 INSERT INTO ReservationLocation (locationId, reservationId)
 VALUES (:locationIdFromDropdown, :reservationIdFromDropdown);
-
--- -----------------------------------------------------
--- Select query to show data for existing record for ReservationLocation page Update operation. (Also used to show values in DELETE confirmation message)
--- -----------------------------------------------------
-SELECT ReservationLocationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `Location`, Reservations.reservationId AS reservationId
-FROM ReservationLocation
-LEFT JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId
-LEFT JOIN Locations ON Locations.locationId = ReservationLocation.locationId
-WHERE reservationLocationId = :id
-ORDER BY reservationLocationId ASC;
-
--- -----------------------------------------------------
--- Update query for ReservationLocation page Update operation using user input from HTML form.
--- -----------------------------------------------------
-UPDATE ReservationLocation SET locationId = :locationIdFromDropdown, reservationId= :reservationIdFromDropdown
-WHERE reservationLocationId = :id
 
 -- -----------------------------------------------------
 -- Dis-associate a Reservation from a Location by deleting from ReservationLocation (M-to-M relationship deletion)

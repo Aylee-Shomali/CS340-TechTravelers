@@ -1,4 +1,4 @@
--- Group 6 TechTravelers Project Step 4 Draft
+-- Group 6 TechTravelers Project Step 6 Final
 -- Group Members: Sajidah Wahdy and Aylee Shomali
 -- DDL + Insert statements for TechTravels Database.
 

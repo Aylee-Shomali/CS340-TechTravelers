@@ -75,6 +75,7 @@ addRowToTable = (data) => {
     let cityNameCell = document.createElement("TD");
     let stateOrProvinceCell = document.createElement("TD");
     let countryNameCell = document.createElement("TD");
+    let deleteCellOuter = document.createElement("TD");
 
     // Fill the cells with correct data
     idCell.innerText = newRow.locationId;
@@ -82,11 +83,25 @@ addRowToTable = (data) => {
     stateOrProvinceCell.innerText = newRow.stateOrProvince;
     countryNameCell.innerText = newRow.countryName;
 
+    // Define the actual delete button element.
+    deleteCellInner = document.createElement("button");
+    deleteCellInner.innerHTML = "Delete";
+    deleteCellInner.onclick = function () {
+        deleteLocation(newRow.locationId);
+    };
+
+    // Add delete button to deleteCell.
+    deleteCellOuter.appendChild(deleteCellInner);
+
     // Add the cells to the row 
     row.appendChild(idCell);
     row.appendChild(cityNameCell);
     row.appendChild(stateOrProvinceCell);
     row.appendChild(countryNameCell);
+    row.appendChild(deleteCellOuter);
+
+    // Add a custom row attribute so the deleteRow function can find a newly added row
+    row.setAttribute('data-value', newRow.locationId);
 
     // Add the row to the table
     currentTable.appendChild(row);

@@ -23,6 +23,14 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
  <h2>Agents</h2>
+
+{{!-- Secondary local navigational bar for CRUD operations--}}
+<nav class="topics">
+    <a href="#browse" class="topics">View All Agents</a>
+    <a href="#insert" class="topics">Add Agents</a>
+    <a href="#update" class="topics">Update Agents</a>
+</nav>
+
 {{!-- Create a table --}}
 <div id="browse">
  <table id="customerTable" border="1" cellpadding="5">
@@ -38,6 +46,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
             <th class="customerH">Email</th>
             <th class="customerH">Phone Number</th>
             <th class="customerH">Location</th>
+            <th>Delete</th>
         </tr>
 
         {{!-- For each row, print the id and other fields in order --}}
@@ -49,6 +58,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
             <td>{{this.email}}</td>
             <td>{{this.phoneNumber}}</td>
             <td>{{this.location}}</td>
+            <td><button onclick="deleteAgent({{this.agentId}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -73,7 +83,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
               <select name="locationId" id="input-locationId">
                 <option value="0"></option>
                 {{#each locationData}}
-                <option value="{{this.locationId}}">{{this.location}}</option>
+                <option id="option-{{this.location}}" value="{{this.locationId}}">{{this.location}}</option>
                 {{/each}}
               </select> 
               <caption>* these fields are required</caption>
@@ -82,4 +92,46 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email
         </form> 
 </div><!-- insert -->
 
+{{!-- Return to Top button --}}
+<button class="btn" onclick="topFunction()" id="topBtn" title="Go to top">Return to Top</button>
+
+<!-- Update -->
+<div id="update">
+    <form id="update-agent-form">
+        <legend><strong>Update Agent</strong></legend>
+        <fieldset class="fields">
+            <br>
+            <label for="agentId" class="required"> Agent </label>
+                <select name="customerId" id="input-agentId-update" required>
+                    <option value="0">Select an Agent</option>
+                    {{#each agentDropdown}}
+                    <option value="{{this.agentId}}">{{this.agent}}</option>
+                    {{/each}}
+                </select>
+            <br>
+            <label for="firstName" class="required"> First Name </label>
+            <input type="text" name="firstName" required id="input-firstName-update" maxlength="50"/>
+            <label for="lastName" class="required"> Last Name </label>
+            <input type="text" name="lastName" required id="input-lastName-update" maxlength="80"/>
+            <label for="email" class="required"> Email </label>
+            <input type="email" name="email" id="input-email-update" maxlength="100" pattern="[^ @]+@[^ @]+.[a-z]+" placeholder="name@email.com" required/>
+            <label for="phoneNumber" class="required"> Phone Number </label>
+            <input type="text" name="phoneNumber" required id="input-phoneNumber-update" maxlength="15" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: xxx-xxx-xxxx"/>
+            </br>
+            <label for="locationId"> Location </label>
+            <select name="locationId" id="input-locationId-update">
+              <option value="0"></option>
+              {{#each locationData}}
+              <option value="{{this.locationId}}">{{this.location}}</option>
+              {{/each}}
+            </select> 
+            <caption>* these fields are required</caption>
+        </fieldset>
+        <input class="btn" type="submit" id="updateAgent" value="Update Agent">
+    </form>
+</div><!-- update -->
+
 <script src="./js/add_agent.js"></script>
+<script src="./js/update_agent.js"></script>
+<script src="./js/delete_agent.js"></script>
+<script src="./js/top_button.js"></script>

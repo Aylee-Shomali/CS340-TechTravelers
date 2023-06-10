@@ -87,6 +87,7 @@ addRowToTable = (data) => {
     let emailCell = document.createElement("TD");
     let phoneNumberCell = document.createElement("TD");
     let locationCell = document.createElement("TD");
+    let deleteCellOuter = document.createElement("TD");
 
     // Fill the cells with correct data
     idCell.innerText = newRow.agentId;
@@ -96,6 +97,16 @@ addRowToTable = (data) => {
     phoneNumberCell.innerText = newRow.phoneNumber;
     locationCell.innerText = newRow.location;
 
+    // Define the actual delete button element.
+    deleteCellInner = document.createElement("button");
+    deleteCellInner.innerHTML = "Delete";
+    deleteCellInner.onclick = function () {
+        deleteAgent(newRow.agentId);
+    };
+
+    // Add delete button to deleteCell.
+    deleteCellOuter.appendChild(deleteCellInner);
+
     // Add the cells to the row 
     row.appendChild(idCell);
     row.appendChild(firstNameCell);
@@ -103,8 +114,21 @@ addRowToTable = (data) => {
     row.appendChild(emailCell);
     row.appendChild(phoneNumberCell);
     row.appendChild(locationCell);
+    row.appendChild(deleteCellOuter);
 
     // Add the row to the table
     currentTable.appendChild(row);
+
+    // Add a custom row attribute so the deleteRow function can find a newly added row
+    row.setAttribute('data-value', newRow.agentId);
+
+    // Add new data to the dropdown menu for updating a record.
+    // Find drop down menu, create a new option, fill data in the option (full name, id),
+    // then append option to drop down menu so newly created rows via ajax will be found in it without needing a refresh.
+    let selectMenu = document.getElementById("input-agentId-update");
+    let option = document.createElement("option");
+    option.text = `${newRow.firstName} ${newRow.lastName}`;
+    option.value = newRow.agentId;
+    selectMenu.add(option);
 
 }
