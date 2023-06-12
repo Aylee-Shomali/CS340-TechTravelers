@@ -33,7 +33,7 @@ updateCustomerForm.addEventListener("submit", function (e) {
     // Currently the database table for customer does not allow updating values to NULL
     // So we must abort if being passed NULL for any values.
     // Enforcing that inputs are not empty
-    if (isNaN(customerIdValue) 
+    if (customerIdValue == 0
         | firstNameValue == ""
         | lastNameValue == ""
         | emailValue == "" 

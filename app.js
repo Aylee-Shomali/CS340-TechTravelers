@@ -44,7 +44,7 @@ app.get('/customerReservation', function(req, res)
     let query1 = "SELECT customerReservationId,   CONCAT(Customers.firstName, ' ', Customers.lastName) AS customer, reservationId FROM CustomerReservation JOIN Customers ON CustomerReservation.customerId = Customers.customerId ORDER BY customerReservationId ASC;";
 
     // Declare Query 2
-    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations LEFT JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
     // Declare Query 3
     let query3 = "SELECT customerId, CONCAT(Customers.firstName, ' ', Customers.lastName) AS `customer` FROM Customers ORDER BY customerId ASC;";
@@ -144,7 +144,7 @@ app.get('/customers', function (req, res) {
 
 app.get('/reservations', function (req, res) {
     // Declare Query1
-    let query = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+    let query = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations LEFT JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
     // Declare Query 2
     let query2 = "SELECT agentId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS `agent` FROM Agents ORDER BY agentId ASC;";
@@ -172,7 +172,7 @@ app.get('/reservationLocation', function (req, res) {
     let query1 = "SELECT reservationLocationId, CONCAT(cityName,', ', IF(stateOrProvince IS NOT NULL, CONCAT(stateOrProvince, ', '), ''), countryName) AS `location`, ReservationLocation.reservationId FROM ReservationLocation INNER JOIN Locations ON ReservationLocation.locationId = Locations.locationId INNER JOIN Reservations ON Reservations.reservationId = ReservationLocation.reservationId ORDER BY reservationLocationId ASC; ";
 
     // Declare Query 2 
-    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
+    let query2 = "SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations LEFT JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;";
 
     // Declare Query 3 reservation dropdown
     let query3 = "SELECT reservationId FROM Reservations ORDER BY reservationId ASC; ";
@@ -318,7 +318,9 @@ app.post('/add-agent', function(req, res)
     // Capture NULL values + Handle additional single quotes.
     let locationId = data.locationId;
     if (locationId == 0)
-    locationId = 'NULL';
+    {
+        locationId = 'NULL';
+    }
 
     // Create the query and run it on the database
     query1 = `INSERT INTO Agents (firstName, lastName, email, phoneNumber, locationId) VALUES ('${data.firstName}', '${data.lastName}', '${data.email}', '${data.phoneNumber}', ${locationId})`;
@@ -399,31 +401,16 @@ app.post('/add-reservation', function (req, res) {
     let data = req.body;
 
     // Capture NULL values + Handle additional single quotes.
-    // Data.startDate gives "yyyy-mm-dd" JSON format
-    let startDate = data.startDate; 
-    let endDate = data.endDate;
-    
-    if (startDate == "")
+    let agentId = data.agentId;
+    if (agentId == 0)
     {
-        startDate = 'NULL';
-
-    }
-    else{
-        startDate = `'${data.startDate}'`;
-    }
-
-    if (endDate == "")
-    {
-        endDate = 'NULL';
-    }
-    else{  
-        endDate = `'${data.endDate}'`;
+        agentId = 'NULL';
     }
 
     // Create the query and run it on the database
     // date variables are listed directly without prefix ".data" so treated as a string w/ single quotes ie: "'yyyy-mm-dd'"
     
-    query1 = `INSERT INTO Reservations (agentId, startDate, endDate) VALUES (${data.agentId}, ${startDate}, ${endDate});`;
+    query1 = `INSERT INTO Reservations (agentId, startDate, endDate) VALUES (${agentId}, '${data.startDate}', '${data.endDate}');`;
 
     db.pool.query(query1, function (error, rows, fields) {
 
@@ -436,7 +423,7 @@ app.post('/add-reservation', function (req, res) {
         }
         else {
             // If there was no error, get all records.
-            query2 = `SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;`;
+            query2 = `SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate FROM Reservations LEFT JOIN Agents ON Reservations.agentId = Agents.agentId ORDER BY reservationId ASC;`;
             
             db.pool.query(query2, function (error, rows, fields) {
 

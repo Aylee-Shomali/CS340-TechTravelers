@@ -95,7 +95,7 @@ ORDER BY customerReservationId ASC;
 -- -----------------------------------------------------
 SELECT reservationId, CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, date_format(endDate, '%Y-%m-%d') AS endDate 
 FROM Reservations 
-JOIN Agents ON Reservations.agentId = Agents.agentId 
+LEFT JOIN Agents ON Reservations.agentId = Agents.agentId 
 ORDER BY reservationId ASC;
 
 -- -----------------------------------------------------
@@ -184,7 +184,7 @@ SELECT reservationId,
     date_format(startDate, '%Y-%m-%d') AS startDate,
     date_format(endDate, '%Y-%m-%d') AS endDate
 FROM Reservations
-JOIN Agents ON Reservations.agentId = Agents.agentId
+LEFT JOIN Agents ON Reservations.agentId = Agents.agentId
 ORDER BY reservationId ASC;
 
 -- -----------------------------------------------------
@@ -221,7 +221,7 @@ SELECT reservationId,
         CONCAT(Agents.firstName, ' ', Agents.lastName) AS agent, date_format(startDate,'%Y-%m-%d') AS startDate, 
         date_format(endDate, '%Y-%m-%d') AS endDate 
 FROM Reservations 
-JOIN Agents ON Reservations.agentId = Agents.agentId 
+LEFT JOIN Agents ON Reservations.agentId = Agents.agentId 
 ORDER BY reservationId ASC;
 
 -- -----------------------------------------------------

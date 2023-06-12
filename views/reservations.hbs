@@ -52,17 +52,17 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
     <form id="add-reservation-form">
         <legend><strong>Add Reservation</strong></legend>
         <fieldset class="fields">
-            <label for="agent" class="required"> Agent </label>
-                <select name="agent" id="input-agentId" required>
-                    <option value="0">Select an Agent</option>
+            <label for="agent"> Agent </label>
+                <select name="agent" id="input-agentId">
+                    <option value="0"></option>
                     {{#each agentData}}
                     <option value="{{this.agentId}}">{{this.agent}}</option>
                     {{/each}}
                 </select>
-            <label for="startDate"> Start Date </label>
-                <input type="date" name="startDate" id="input-startDate" maxlength="8" />
-            <label for="endDate"> End Date </label>
-                <input type="date" name="endDate"  id="input-endDate" maxlength="8" />
+            <label for="startDate" class="required"> Start Date </label>
+                <input type="date" name="startDate" id="input-startDate" maxlength="8" required/>
+            <label for="endDate" class="required"> End Date </label>
+                <input type="date" name="endDate"  id="input-endDate" maxlength="8" required/>
             </br>
             <caption>* these fields are required</caption>
         </fieldset>
@@ -71,5 +71,4 @@ Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 </div><!-- insert -->
 
 <script src="./js/add_reservation.js"></script>
-{{!-- <script src="./js/update_reservation.js"></script>--}}
 <script src="./js/delete_reservation.js"></script>

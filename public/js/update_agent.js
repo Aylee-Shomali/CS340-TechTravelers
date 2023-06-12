@@ -32,7 +32,7 @@ updateAgentForm.addEventListener("submit", function (e) {
 
 
     // Throw error if any values are empty other than the locationId.
-    if (isNaN(agentIdValue) 
+    if (agentIdValue == 0
         | firstNameValue == ""
         | lastNameValue == ""
         | emailValue == "" 

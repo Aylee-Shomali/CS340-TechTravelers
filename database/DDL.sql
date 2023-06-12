@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `Agents` (
   CONSTRAINT `locationId`
     FOREIGN KEY (`locationId`)
     REFERENCES `Locations` (`locationId`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE CASCADE);
 
 -- -----------------------------------------------------
@@ -61,14 +61,14 @@ DROP TABLE IF EXISTS `Reservations` ;
 
 CREATE TABLE IF NOT EXISTS `Reservations` (
   `reservationId` INT(50) NOT NULL AUTO_INCREMENT,
-  `agentId` INT(50) NOT NULL,
-  `startDate` DATE NULL,
-  `endDate` DATE NULL,
+  `agentId` INT(50),
+  `startDate` DATE NOT NULL,
+  `endDate` DATE NOT NULL,
   PRIMARY KEY (`reservationId`),
   CONSTRAINT `agentId`
     FOREIGN KEY (`agentId`)
     REFERENCES `Agents` (`agentId`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE CASCADE);
 
 
@@ -86,12 +86,12 @@ CREATE TABLE IF NOT EXISTS `CustomerReservation` (
     FOREIGN KEY (`customerId`)
     REFERENCES `Customers` (`customerId`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT `reservationId`
     FOREIGN KEY (`reservationId`)
     REFERENCES `Reservations` (`reservationId`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+    ON UPDATE CASCADE);
 
 
 -- -----------------------------------------------------

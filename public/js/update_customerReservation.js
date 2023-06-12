@@ -27,9 +27,10 @@ updateCustomerReservationForm.addEventListener("submit", function (e) {
     // Currently the database table for customerReservation does not allow updating values to NULL
     // So we must abort if being passed NULL for any values.
 
-    if (isNaN(idValue) || isNaN(customerIdValue) || isNaN(reservationIdValue)) 
+    if (idValue == 0 || customerIdValue == 0 || reservationIdValue == 0) 
     {
-        // We could add an error message here?
+        // Error message here.
+        console.log("Null values are not accepted with this input.")
         return;
     }
 
